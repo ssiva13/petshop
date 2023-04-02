@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: petshop
+        restart: unless-stopped
+        volumes:
+            - .:/var/www
+        ports:
+            - "8902:80"
+        depends_on:
+            - petshop_db
+
+    petshop_db:
+        image: mysql:8.0
+        container_name: petshop_db
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "${DB_PORT}:3306"
+        volumes:
+            - ./docker/dbdata/:/var/lib/mysql
+
