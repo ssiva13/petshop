@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->uuid('category_uuid');
+            $table->uuid('brand_uuid');
             $table->string('title');
             $table->double('price', 12, 2);
             $table->text('description');
@@ -24,6 +25,7 @@ return new class extends Migration
 
 
             $table->foreign('category_uuid')->references('uuid')->on('categories');
+            $table->foreign('brand_uuid')->references('uuid')->on('brands');
         });
     }
 
