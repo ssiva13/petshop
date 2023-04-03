@@ -12,9 +12,11 @@ services:
         ports:
             - "8902:80"
         depends_on:
-            - petshop_db
+            - app_db
+        networks:
+            - app-network
 
-    petshop_db:
+    app_db:
         image: mysql:8.0
         container_name: petshop_db
         restart: unless-stopped
@@ -27,4 +29,10 @@ services:
             - "${DB_PORT}:3306"
         volumes:
             - ./docker/dbdata/:/var/lib/mysql
+        networks:
+            - app-network
 
+#Docker Networks
+networks:
+    app-network:
+        driver: bridge
