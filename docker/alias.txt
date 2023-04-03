@@ -1,0 +1,14 @@
+#
+# custom aliases
+alias cls='clear'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# php laravel aliases
+alias art='php artisan'
+
+#more
+alias hi='hostname -I'

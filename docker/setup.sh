@@ -3,6 +3,10 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+#add some simple aliases to /root/.bashrc
+cat ./docker/alias.txt >> /root/.bashrc
+source /root/.bashrc
+
 # Change access rights for the Laravel folders
 # in order to make Laravel able to access
 # cache and logs folder.
@@ -30,11 +34,12 @@ echo -e "\n${BLUE} Please wait while installing Composer packages ... \n ${NC}" 
 #    && echo -e "\n${GREEN} Node Packages Installed ... \n ${NC}"
 #
 
-# #Run `npm rebuild node-sass` to download the binding for your current environment
+# Run `npm rebuild node-sass` to download the binding for your current environment
 #echo -e "\n${BLUE} Please wait while building Node Sass Packages ... \n ${NC}" \
 #    && npm rebuild node-sass \
 #    && echo -e "\n${GREEN} Node Packages built ... \n ${NC}"
 #
+
 #echo -e "\n${BLUE} Please wait while building Node Packages ... \n ${NC}" \
 #    && npm run dev \
 #    && echo -e "\n${GREEN} Node Packages built ... \n ${NC}"

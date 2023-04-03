@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         curl \
         wget \
+        vim \
         libzip-dev \
         libpq-dev
 
@@ -39,6 +40,9 @@ WORKDIR /var/www
 
 # Copy source code
 COPY . .
+
+# Install composer dependencies
+RUN composer install --no-interaction --prefer-dist
 
 # Expose port 80
 EXPOSE 80
