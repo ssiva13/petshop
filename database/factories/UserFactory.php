@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -14,15 +15,22 @@ class UserFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     * @throws \Exception
      */
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'phone_number' => fake()->phoneNumber(),
+            'address' => fake()->address(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'is_admin' => random_int(0, 1),
+            'is_marketing' => random_int(0, 1),
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+
         ];
     }
 
