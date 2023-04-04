@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserSeeder extends Seeder
 {
@@ -14,7 +16,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::create([
+        $userRequest = new UserRequest();
+        $adminUser = [
             'first_name' => 'Simon',
             'last_name' => 'Siva',
             'is_admin' => 1,
@@ -23,9 +26,13 @@ class UserSeeder extends Seeder
             'is_marketing' => 0,
             'email' => 'admin@buckhill.co.uk',
             'password' => Hash::make('admin'),
-        ]);
+        ];
+        $validator = Validator::make($adminUser, $userRequest->rules());
+        if ($validator->passes()) {
+            User::create($adminUser);
+        }
 
-        $marketing = User::create([
+        $marketingUser = [
             'first_name' => 'Simon',
             'last_name' => 'Mulwa',
             'is_admin' => 0,
@@ -34,9 +41,11 @@ class UserSeeder extends Seeder
             'is_marketing' => 1,
             'email' => 'marketing@buckhill.co.uk',
             'password' => Hash::make('marketing'),
-        ]);
-
-
+        ];
+        $validator = Validator::make($marketingUser, $userRequest->rules());
+        if ($validator->passes()) {
+            User::create($marketingUser);
+        }
 
 
 
