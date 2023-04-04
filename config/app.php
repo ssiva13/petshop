@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -198,6 +198,7 @@ return [
 
         // My ServiceProviders
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
     ],
 
     /*
