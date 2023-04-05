@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\UserController;
+use App\Http\Controllers\Api\Auth\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,9 +31,19 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::post('create', [UserController::class, 'store'])->name('user.create');
         Route::post('login', [UserController::class, 'login'])->name('user.login');
-        
+
         Route::group(['middleware' => 'jwt'], function () {
             Route::get('/', [UserController::class, 'profile'])->name('user');
+        });
+    });
+
+    // Admin API endpoint
+    Route::group(['prefix' => 'admin'], function () {
+        Route::post('create', [AdminController::class, 'store'])->name('user.create');
+        Route::post('login', [AdminController::class, 'login'])->name('user.login');
+
+        Route::group(['middleware' => 'jwt'], function () {
+            
         });
     });
 

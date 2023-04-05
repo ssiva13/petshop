@@ -4,6 +4,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -93,4 +95,32 @@ class User extends Authenticatable
      */
     public $timestamps = true;
 
+    /* ----------------------------
+     * Model Relationships
+     */
+    public function jwtTokens(): HasMany
+    {
+        return $this->hasMany(JwtToken::class);
+    }
+
+    public function jwtToken(): HasOne
+    {
+        return $this->hasOne(JwtToken::class)->latest();
+    }
+    /*
+     * Model Relationships
+     * ----------------------------
+     */
+
+    /* ----------------------------
+     * Model Scopes
+     */
+    public function scopeAdmin($query, $admin = true)
+    {
+        return $query->where('is_admin', $admin);
+    }
+    /*
+     * Model Scopes
+     * ----------------------------
+     */
 }
