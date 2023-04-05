@@ -49,7 +49,7 @@ class UserRepository implements UserInterface
 
     public function update($uuid, array $data)
     {
-        return User::where('uuid', $uuid)->update($data);
+        return User::find($uuid)->update($data);
     }
 
     public function saveAuthToken(UnencryptedToken $authToken)
@@ -69,7 +69,7 @@ class UserRepository implements UserInterface
 
     public function getPaginated(array $data = [])
     {
-        $users = User::admin(false)
+        return User::admin(false)
             ->when($data['first_name'], function ($query, $value) {
                 return $query->where('first_name', 'LIKE', $value);
             })
@@ -89,7 +89,5 @@ class UserRepository implements UserInterface
                 return $query->where('created_at', $value);
             })
             ->orderBy($data['sortBy'], $data['desc'])->paginate((int)$data['limit'], page: $data['page']);
-
-        return $users;
     }
 }
