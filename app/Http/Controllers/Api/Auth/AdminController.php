@@ -12,6 +12,7 @@ use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -69,4 +70,10 @@ class AdminController extends ApiController
         }
     }
 
+    public function logout( Request $request ): JsonResponse
+    {
+        $auth = Auth::guard();
+        $auth->logout();
+        return $this->sendSuccessResponse([]);
+    }
 }
