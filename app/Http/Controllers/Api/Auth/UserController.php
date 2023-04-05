@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Lcobucci\JWT\Token\Parser;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class UserController extends ApiController
 {
@@ -36,18 +37,12 @@ class UserController extends ApiController
             $user = $this->userRepository->create( $request->all());
             $authToken = $this->getAuthToken($user);
             $this->userRepository->saveAuthToken($authToken);
-
-            $success = [
-                'user' => $user,
-                'token' => $authToken->toString(),
-                'expiry' => $authToken->claims()->get('exp'),
-            ];
-
+            $user->token = $authToken->toString();
             DB::commit();
-            return $this->sendResponse($success, 'User registered successfully', 201);
+            return $this->sendSuccessResponse($user, HttpResponse::HTTP_CREATED);
         } catch (\Exception $exception) {
             DB::rollback();
-            return $this->sendError('error', $exception->getMessage(), 500);
+            return $this->throwError($exception->getMessage(), $exception->getTrace(), $exception->getCode());
         }
     }
 
@@ -56,18 +51,21 @@ class UserController extends ApiController
         try{
              if($auth = Auth::attempt($request->validated())) {
                  $user = Auth::user();
+                 if($user->is_admin){
+                     return $this->sendErrorResponse('Failed to authenticate user!', HttpResponse::HTTP_UNPROCESSABLE_ENTITY);
+                 }
                  $authToken = $this->getAuthToken($user);
                  $this->userRepository->saveAuthToken($authToken);
-                 $success = [
+                 $response = [
                      'token' => $authToken->toString(),
                      'expiry' => $authToken->claims()->get('exp'),
                  ];
-                 return $this->sendResponse($success, 'Successful', 200);
+                 return $this->sendSuccessResponse($response);
              } else{
-                 return $this->sendError('error', 'Wrong Password!', 403);
+                 return $this->sendErrorResponse('Failed to authenticate user!', HttpResponse::HTTP_FORBIDDEN);
              }
         } catch (\Exception $exception) {
-            return $this->sendError('error', $exception->getMessage(), 500);
+            return $this->throwError($exception->getMessage(), $exception->getTrace(), $exception->getCode());
         }
     }
 
@@ -75,9 +73,11 @@ class UserController extends ApiController
     {
         $token = app(Parser::class, ['token' => $request->bearerToken()]);
         $uuid = $token->claims()->get('uuid');
+        if(!$uuid){
+            return $this->sendErrorResponse('Unauthorized!', HttpResponse::HTTP_FORBIDDEN);
+        }
         $user = $this->userRepository->getByUUID($uuid);
-        
-        return $this->sendResponse($user, 'User Profile');
+        return $this->sendSuccessResponse($user);
     }
 
 }
