@@ -199,6 +199,7 @@ return [
         // My ServiceProviders
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
+        App\Providers\JwtServiceProvider::class,
     ],
 
     /*

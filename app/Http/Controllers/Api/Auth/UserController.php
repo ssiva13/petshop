@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Lcobucci\JWT\Token\Parser;
 
 class UserController extends ApiController
 {
@@ -72,9 +73,10 @@ class UserController extends ApiController
 
     public function profile(Request $request): JsonResponse
     {
-        $uuid = $request->get('uuid');
+        $token = app(Parser::class, ['token' => $request->bearerToken()]);
+        $uuid = $token->claims()->get('uuid');
         $user = $this->userRepository->getByUUID($uuid);
-
+        
         return $this->sendResponse($user, 'User Profile');
     }
 
