@@ -13,6 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $created_at
  * @property int    $updated_at
  * @property int    $deleted_at
+ * @method static findOrFail($uuid)
+ * @method static find($uuid)
+ * @method static create(array $data)
+ * @method static where(string $string, $uuid)
+ * @method static when(mixed $first_name, \Closure $param)
+ * @method static orderBy(mixed $sortBy, mixed $desc)
  */
 class Category extends Model
 {

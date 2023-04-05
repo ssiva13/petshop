@@ -28,6 +28,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property boolean $is_admin
  * @method static create(array $array)
  * @method static findOrFail($id)
+ * @method static find($uuid)
+ * @method static admin(false $false)
  */
 class User extends Authenticatable
 {
