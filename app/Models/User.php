@@ -27,6 +27,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property boolean $is_marketing
  * @property boolean $is_admin
  * @method static create(array $array)
+ * @method static findOrFail($id)
  */
 class User extends Authenticatable
 {
@@ -64,7 +65,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'is_admin' , 'id', 'deleted_at'
     ];
 
     /**
@@ -118,6 +119,11 @@ class User extends Authenticatable
     public function scopeAdmin($query, $admin = true)
     {
         return $query->where('is_admin', $admin);
+    }
+
+    public function scopeMarketing($query, $admin = true)
+    {
+        return $query->where('is_marketing', $admin);
     }
     /*
      * Model Scopes
