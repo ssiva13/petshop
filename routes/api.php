@@ -45,6 +45,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['middleware' => 'jwt'], function () {
             Route::get('user-listing', [AdminController::class, 'allUsers'])->name('admin.user-listing');
+            Route::put('user-edit/{uuid}', [AdminController::class, 'editUser'])->name('admin.user-edit');
         });
     });
 

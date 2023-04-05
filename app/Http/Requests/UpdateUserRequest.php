@@ -2,15 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * @property mixed $is_admin
- * @property mixed $is_marketing
- */
-class UserRequest extends FormRequest
+class UpdateUserRequest extends UserRequest
 {
-    use RequestErrors;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,10 +20,11 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->user());
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255',
             'password' => 'required|string|min:8|confirmed',
             'address' => 'required|string|max:255',
             'phone_number' => 'required|string|min:11',

@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -77,7 +78,8 @@ class AdminController extends ApiController
         return $this->sendSuccessResponse([]);
     }
 
-    public function allUsers(Request $request){
+    public function allUsers(Request $request): JsonResponse
+    {
         $data = [
             "first_name" =>  $request->get('first_name', null),
             "email" =>  $request->get('email', null),
@@ -92,6 +94,25 @@ class AdminController extends ApiController
         ];
         $users = $this->userRepository->getPaginated($data);
         return $this->sendSuccessResponse($users, errors: null, extra: null);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function editUser($uuid, UpdateUserRequest $request): JsonResponse
+    {
+        if(!$user = $this->userRepository->getByUUID($uuid)){
+            return $this->sendErrorResponse('User not found!', HttpResponse::HTTP_NOT_FOUND);
+        }
+        DB::beginTransaction();
+        try{
+            $user->update( $request->except(['uuid']) );
+            DB::commit();
+            return $this->sendSuccessResponse($user);
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return $this->throwError($exception->getMessage(), $exception->getTrace());
+        }
     }
 
 }
