@@ -32,7 +32,8 @@ class UserRepository implements UserInterface
 
     public function delete($uuid)
     {
-        return User::delete($uuid);
+        $user = User::findOrFail($uuid);
+        return $user->delete();
     }
 
     public function create(array $data, $admin = false)
@@ -62,5 +63,31 @@ class UserRepository implements UserInterface
         // $jwtToken->refreshed_at = $token['uuid'];
         // $jwtToken->restrictions = $token['uuid'];
         $jwtToken->save();
+    }
+
+    public function getPaginated(array $data = [])
+    {
+        $users = User::admin(false)
+            ->when($data['first_name'], function ($query, $value) {
+                return $query->where('first_name', 'LIKE', $value);
+            })
+            ->when($data['email'], function ($query, $value) {
+                return $query->where('email', 'LIKE', $value);
+            })
+            ->when($data['phone'], function ($query, $value) {
+                return $query->where('phone_number', 'LIKE', $value);
+            })
+            ->when($data['address'], function ($query, $value) {
+                return $query->where('address', 'LIKE', $value);
+            })
+            ->when($data['marketing'], function ($query, $value) {
+                return $query->marketing((bool) $value);
+            })
+            ->when($data['created_at'], function ($query, $value) {
+                return $query->where('created_at', $value);
+            })
+            ->orderBy($data['sortBy'], $data['desc'])->paginate((int)$data['limit'], page: $data['page']);
+
+        return $users;
     }
 }

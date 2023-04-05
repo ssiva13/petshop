@@ -10,6 +10,7 @@ namespace App\Repositories\User;
 interface UserInterface
 {
     public function getAll();
+    public function getPaginated();
     public function getByUUID($uuid);
     public function getById($id);
     public function delete($uuid);
