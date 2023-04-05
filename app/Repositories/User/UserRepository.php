@@ -32,7 +32,9 @@ class UserRepository implements UserInterface
 
     public function delete($uuid)
     {
-        $user = User::findOrFail($uuid);
+        if(!$user = User::find($uuid)){
+            return false;
+        }
         return $user->delete();
     }
 

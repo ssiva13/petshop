@@ -115,4 +115,22 @@ class AdminController extends ApiController
         }
     }
 
+    /**
+     * @throws \Throwable
+     */
+    public function deleteUser($uuid): JsonResponse
+    {
+        DB::beginTransaction();
+        try{
+            if(!$this->userRepository->delete($uuid)){
+                return $this->sendErrorResponse('User not found!', HttpResponse::HTTP_NOT_FOUND);
+            }
+            DB::commit();
+            return $this->sendSuccessResponse([]);
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return $this->throwError($exception->getMessage(), $exception->getTrace());
+        }
+    }
+
 }
