@@ -80,4 +80,10 @@ class UserController extends ApiController
         return $this->sendSuccessResponse($user);
     }
 
+    public function logout( Request $request ): JsonResponse
+    {
+        $auth = Auth::guard();
+        $auth->logout();
+        return $this->sendSuccessResponse([]);
+    }
 }
