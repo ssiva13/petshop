@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\UserController;
 use App\Http\Controllers\Api\Auth\AdminController;
+use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,11 +22,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(['prefix' => 'v1'], function () {
-
-    // Admin API endpoint
-    Route::group(['prefix' => 'admin'], function () {
-
-    });
 
     // User API endpoint
     Route::group(['prefix' => 'user'], function () {
@@ -49,6 +45,18 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('user-delete/{uuid}', [AdminController::class, 'deleteUser'])->name('admin.user-delete');
         });
     });
+
+    // Category API endpoint
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('categories', [CategoryController::class, 'all'])->name('categories');
+        Route::get('{uuid}', [CategoryController::class, 'fetch'])->name('category.fetch');
+        Route::group(['middleware' => 'jwt'], function () {
+            Route::post('create', [CategoryController::class, 'store'])->name('category.create');
+            Route::put('{uuid}', [CategoryController::class, 'edit'])->name('category.edit');
+            Route::delete('{uuid}', [CategoryController::class, 'delete'])->name('category.delete');
+        });
+    });
+
 
 
 });
