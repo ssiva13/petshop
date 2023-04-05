@@ -39,11 +39,12 @@ Route::group(['prefix' => 'v1'], function () {
 
     // Admin API endpoint
     Route::group(['prefix' => 'admin'], function () {
-        Route::post('create', [AdminController::class, 'store'])->name('user.create');
-        Route::post('login', [AdminController::class, 'login'])->name('user.login');
+        Route::post('create', [AdminController::class, 'store'])->name('admin.create');
+        Route::post('login', [AdminController::class, 'login'])->name('admin.login');
+        Route::post('logout', [AdminController::class, 'logout'])->name('admin.logout');
 
         Route::group(['middleware' => 'jwt'], function () {
-            
+            Route::get('user-listing', [AdminController::class, 'allUsers'])->name('admin.user-listing');
         });
     });
 

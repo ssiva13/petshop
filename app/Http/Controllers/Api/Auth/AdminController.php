@@ -76,4 +76,22 @@ class AdminController extends ApiController
         $auth->logout();
         return $this->sendSuccessResponse([]);
     }
+
+    public function allUsers(Request $request){
+        $data = [
+            "first_name" =>  $request->get('first_name', null),
+            "email" =>  $request->get('email', null),
+            "phone" =>  $request->get('phone', null),
+            "address" =>  $request->get('address', null),
+            "marketing" =>  $request->get('marketing', null),
+            "created_at" =>  $request->get('created_at', null),
+            "page" =>  $request->get('page', 1),
+            "limit" =>  $request->get('limit', 15),
+            "sortBy" =>  $request->get('sortBy', 'created_at'),
+            "desc" =>  $request->get('desc', true) ? 'desc' : 'asc',
+        ];
+        $users = $this->userRepository->getPaginated($data);
+        return $this->sendSuccessResponse($users, errors: null, extra: null);
+    }
+
 }
