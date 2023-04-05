@@ -62,6 +62,6 @@ class ApiController extends Controller
             'trace' => $errorTrace,
         ];
 
-        return response()->json($response, $status);
+        return response()->json($response, $status ?: 500);
     }
 }
