@@ -69,9 +69,14 @@ class JwtMiddleware
             return $next($request);
 
         } catch (\Exception $exception) {
-            return response()->json([
-                'error' => 'Invalid Token! You are not authorized to access this resource!'
-            ], 403);
+            $response = [
+                'success' => false,
+                'data' => [],
+                'error' => 'Invalid Token! You are not authorized to access this resource!',
+                'errors' => [],
+                'trace' => [],
+            ];
+            return response()->json($response, 401);
         }
 
     }
