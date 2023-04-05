@@ -22,7 +22,7 @@ class BrandFactory extends Factory
     {
         $this->title = fake()->text(random_int(5,10));
         return [
-            'title' => fake()->firstName(),
+            'title' => $this->title,
             'slug' => Str::slug($this->title),
         ];
     }
