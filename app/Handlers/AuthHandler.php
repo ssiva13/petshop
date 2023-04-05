@@ -47,6 +47,7 @@ class AuthHandler
                                 ->identifiedBy(uniqid())
                                 ->withClaim('email', $user->email)
                                 ->withClaim('uuid', $user->uuid)
+                                ->withClaim('is_admin', (bool) $user->is_admin)
                                 ->permittedFor($permittedFor)
                                 ->expiresAt(
                                     $issuedAt->modify('+30 minutes')
