@@ -10,6 +10,7 @@ namespace App\Repositories\User;
 use App\Models\JwtToken;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\UnencryptedToken;
 
 class UserRepository implements UserInterface
@@ -39,6 +40,7 @@ class UserRepository implements UserInterface
         if ($admin){
             $data['is_admin'] = 1;
         }
+        $data['password'] = Hash::make($data['password']);
         return User::create($data);
     }
 
