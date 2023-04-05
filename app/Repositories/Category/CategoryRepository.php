@@ -19,7 +19,7 @@ class CategoryRepository implements CategoryInterface
 
     public function getByUUID($uuid)
     {
-        return Category::findOrFail($uuid);
+        return Category::find($uuid);
     }
 
     public function delete($uuid): bool
@@ -42,6 +42,7 @@ class CategoryRepository implements CategoryInterface
 
     public function getPaginated(array $data = [])
     {
-        return Category::paginate((int)$data['limit'], page: $data['page'])->orderBy($data['sortBy'], $data['desc']);
+        return Category::orderBy($data['sortBy'], $data['desc'])
+            ->paginate((int)$data['limit'], page: $data['page']);
     }
 }
