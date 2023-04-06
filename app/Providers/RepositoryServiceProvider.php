@@ -12,6 +12,8 @@ use App\Repositories\OrderStatus\OrderStatusInterface;
 use App\Repositories\OrderStatus\OrderStatusRepository;
 use App\Repositories\User\UserInterface;
 use App\Repositories\User\UserRepository;
+use App\Repositories\Product\ProductInterface;
+use App\Repositories\Product\ProductRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -26,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BrandInterface::class, BrandRepository::class);
         $this->app->bind(FileInterface::class, FileRepository::class);
         $this->app->bind(OrderStatusInterface::class, OrderStatusRepository::class);
+        $this->app->bind(ProductInterface::class, ProductRepository::class);
     }
 
     /**

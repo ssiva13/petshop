@@ -71,16 +71,16 @@ class UserRepository implements UserInterface
     {
         return User::admin(false)
             ->when($data['first_name'], function ($query, $value) {
-                return $query->where('first_name', 'LIKE', $value);
+                return $query->where('first_name', 'LIKE', "%$value%");
             })
             ->when($data['email'], function ($query, $value) {
-                return $query->where('email', 'LIKE', $value);
+                return $query->where('email', 'LIKE', "%$value%");
             })
             ->when($data['phone'], function ($query, $value) {
-                return $query->where('phone_number', 'LIKE', $value);
+                return $query->where('phone_number', 'LIKE', "%$value%");
             })
             ->when($data['address'], function ($query, $value) {
-                return $query->where('address', 'LIKE', $value);
+                return $query->where('address', 'LIKE', "%$value%");
             })
             ->when($data['marketing'], function ($query, $value) {
                 return $query->marketing((bool) $value);
