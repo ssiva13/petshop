@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\AdminController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\OrderStatusController;
+use App\Http\Controllers\Api\FileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -80,6 +81,16 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('{uuid}', [OrderStatusController::class, 'delete'])->name('order-status.delete');
         });
     });
+
+    // File API endpoint
+    Route::group(['prefix' => 'file'], function () {
+        Route::get('{uuid}', [FileController::class, 'download'])->name('file.fetch');
+        Route::group(['middleware' => 'jwt'], function () {
+            Route::post('upload', [FileController::class, 'store'])->name('file.create');
+        });
+    });
+
+
 
 
 
