@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\OrderStatusController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +101,17 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('create', [ProductController::class, 'store'])->name('product.create');
             Route::put('{uuid}', [ProductController::class, 'edit'])->name('product.edit');
             Route::delete('{uuid}', [ProductController::class, 'delete'])->name('product.delete');
+        });
+    });
+
+    // Payments API endpoint
+    Route::group(['prefix' => 'payment'], function () {
+        Route::get('payments', [PaymentController::class, 'all'])->name('payments');
+        Route::get('{uuid}', [PaymentController::class, 'fetch'])->name('payment.fetch');
+        Route::group(['middleware' => 'jwt'], function () {
+            Route::post('create', [PaymentController::class, 'store'])->name('payment.create');
+            Route::put('{uuid}', [PaymentController::class, 'edit'])->name('payment.edit');
+            Route::delete('{uuid}', [PaymentController::class, 'delete'])->name('payment.delete');
         });
     });
 
