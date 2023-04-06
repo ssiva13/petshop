@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Product;
+namespace App\Http\Requests\Payment;
 
 use App\Http\Requests\RequestErrors;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class ProductRequest extends FormRequest
+class PaymentRequest extends FormRequest
 {
     use RequestErrors;
     /**
@@ -25,27 +25,23 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_uuid'  => 'required|exists:categories,uuid',
-            'brand_uuid'  => 'required|exists:brands,uuid',
-            'title'  => 'required|string',
-            'price'  => 'required|numeric',
-            'description'  => 'required|string',
-            'metadata' => 'required|json',
+            'type'  => 'required|exists:payment_types,slug',
+            'details' => 'required|json',
         ];
     }
 
     protected function prepareForValidation()
     {
-        $metadata = $this->get('metadata');
+        $details = $this->get('details');
         $this->merge([
-            'metadata' => $metadata ? json_encode($metadata) : null
+           'details' => $details ? json_encode($details) : null
         ]);
     }
 
     protected function passedValidation()
     {
         $this->merge([
-           'metadata' => json_encode($this->get('metadata'))
+           'details' => json_encode($this->get('details'))
         ]);
     }
 
