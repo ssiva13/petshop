@@ -5,23 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string $title
- * @property string $slug
- * @property int $created_at
- * @property int $updated_at
- * @property int $deleted_at
- * @method static findOrFail($uuid)
+ * @property string $description
+ * @property float  $price
+ * @property int    $created_at
+ * @property int    $updated_at
+ * @property int    $deleted_at
  * @method static find($uuid)
  * @method static create(array $data)
- * @method static where(string $string, $uuid)
- * @method static when(mixed $first_name, \Closure $param)
  * @method static orderBy(mixed $sortBy, mixed $desc)
+ * @method static when(mixed $title, \Closure $param)
  */
-class Brand extends Model
+class Product extends Model
 {
     use SoftDeletes, HasUuids, HasFactory;
 
@@ -30,7 +29,7 @@ class Brand extends Model
      *
      * @var string
      */
-    protected $table = 'brands';
+    protected $table = 'products';
 
     /**
      * The primary key for the model.
@@ -45,7 +44,8 @@ class Brand extends Model
      * @var array
      */
     protected $fillable = [
-        'uuid', 'title', 'slug', 'created_at', 'updated_at', 'deleted_at',
+        'uuid', 'category_uuid', 'brand_uuid', 'title', 'price', 'description',
+        'metadata', 'created_at', 'updated_at', 'deleted_at'
     ];
 
     /**
@@ -54,17 +54,17 @@ class Brand extends Model
      * @var array
      */
     protected $hidden = [
-        'id', 'deleted_at',
+        'id', 'deleted_at'
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be casted to native types.
      *
      * @var array
      */
     protected $casts = [
-        'title' => 'string', 'slug' => 'string', 'created_at' => 'timestamp',
-        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp',
+        'title' => 'string', 'price' => 'double', 'description' => 'string', 'created_at' => 'timestamp',
+        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp'
     ];
 
     /**
@@ -73,7 +73,7 @@ class Brand extends Model
      * @var array
      */
     protected array $dates = [
-        'created_at', 'updated_at', 'deleted_at',
+        'created_at', 'updated_at', 'deleted_at'
     ];
 
     /**
@@ -83,13 +83,17 @@ class Brand extends Model
      */
     public $timestamps = true;
 
-    // Relations ...
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class, 'brand_uuid', 'uuid');
-    }
-
     // Scopes...
+
+    // Relations ...
+    public function category(): HasOne
+    {
+        return $this->hasOne(Category::class, 'uuid', 'category_uuid');
+    }
+    public function brand(): HasOne
+    {
+        return $this->hasOne(Brand::class, 'uuid', 'brand_uuid');
+    }
 
     // Functions ...
 
