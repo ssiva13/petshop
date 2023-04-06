@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\UserController;
 use App\Http\Controllers\Api\Auth\AdminController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\OrderStatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,12 +61,23 @@ Route::group(['prefix' => 'v1'], function () {
 
     // Brands API endpoint
     Route::group(['prefix' => 'brand'], function () {
-        Route::get('categories', [BrandController::class, 'all'])->name('brands');
+        Route::get('brands', [BrandController::class, 'all'])->name('brands');
         Route::get('{uuid}', [BrandController::class, 'fetch'])->name('brand.fetch');
         Route::group(['middleware' => 'jwt'], function () {
             Route::post('create', [BrandController::class, 'store'])->name('brand.create');
             Route::put('{uuid}', [BrandController::class, 'edit'])->name('brand.edit');
             Route::delete('{uuid}', [BrandController::class, 'delete'])->name('brand.delete');
+        });
+    });
+
+    // Order Statuses API endpoint
+    Route::group(['prefix' => 'order-status'], function () {
+        Route::get('order-statuses', [OrderStatusController::class, 'all'])->name('order-statuses');
+        Route::get('{uuid}', [OrderStatusController::class, 'fetch'])->name('order-status.fetch');
+        Route::group(['middleware' => 'jwt'], function () {
+            Route::post('create', [OrderStatusController::class, 'store'])->name('order-status.create');
+            Route::put('{uuid}', [OrderStatusController::class, 'edit'])->name('order-status.edit');
+            Route::delete('{uuid}', [OrderStatusController::class, 'delete'])->name('order-status.delete');
         });
     });
 
