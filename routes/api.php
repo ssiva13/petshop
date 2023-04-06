@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\OrderStatusController;
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -91,6 +92,16 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
 
+    // Products API endpoint
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('products', [ProductController::class, 'all'])->name('products');
+        Route::get('{uuid}', [ProductController::class, 'fetch'])->name('product.fetch');
+        Route::group(['middleware' => 'jwt'], function () {
+            Route::post('create', [ProductController::class, 'store'])->name('product.create');
+            Route::put('{uuid}', [ProductController::class, 'edit'])->name('product.edit');
+            Route::delete('{uuid}', [ProductController::class, 'delete'])->name('product.delete');
+        });
+    });
 
 
 
