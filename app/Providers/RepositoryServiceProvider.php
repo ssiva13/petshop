@@ -14,6 +14,8 @@ use App\Repositories\User\UserInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\Product\ProductInterface;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\Payment\PaymentInterface;
+use App\Repositories\Payment\PaymentRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(FileInterface::class, FileRepository::class);
         $this->app->bind(OrderStatusInterface::class, OrderStatusRepository::class);
         $this->app->bind(ProductInterface::class, ProductRepository::class);
+        $this->app->bind(PaymentInterface::class, PaymentRepository::class);
     }
 
     /**
