@@ -17,12 +17,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int   $deleted_at
  * @property OrderStatus $orderStatus
  * @property Payment $payment
+ * @property User $user
+ * @property array|mixed $products
+ * @property string $uuid
  * @method static findOrFail($uuid)
  * @method static find($uuid)
  * @method static create(array $data)
  * @method static where(string $string, $uuid)
  * @method static when(mixed $first_name, \Closure $param)
  * @method static orderBy(mixed $sortBy, mixed $desc)
+ * @method static select(string[] $array)
  */
 class Order extends Model
 {
@@ -70,7 +74,7 @@ class Order extends Model
         'delivery_fee' => 'double', 'amount' => 'double',
         'created_at' => 'timestamp', 'updated_at' => 'timestamp',
         'shipped_at' => 'timestamp', 'deleted_at' => 'timestamp',
-        'products' => 'array', 'address' => 'array'
+        'products' => 'json', 'address' => 'array'
     ];
 
     /**

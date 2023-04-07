@@ -37,19 +37,11 @@ class PaymentRequest extends FormRequest
            'details' => $details ? json_encode($details) : null
         ]);
     }
-
-    protected function passedValidation()
-    {
-        $this->merge([
-           'details' => json_encode($this->get('details'))
-        ]);
-    }
-
+    
     public function messages(): array
     {
         return [
-            'category_uuid.exists' => 'The selected category uuid is not in petshop.categories!',
-            'brand_uuid.exists' => 'The selected brand uuid is not in found in petshop.brands!',
+            'type.exists' => 'The selected payment type is not allowed!',
         ];
     }
 
