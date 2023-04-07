@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PromotionController;
+use App\Http\Controllers\Api\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -125,6 +126,25 @@ Route::group(['prefix' => 'v1'], function () {
         // Promotions Endpoints
         Route::get('promotions', [PromotionController::class, 'all'])->name('main.promotions');
     });
+
+    // Products API endpoint
+    Route::group(['prefix' => 'orders'], function () {
+        Route::group(['middleware' => 'jwt'], function () {
+            Route::get('', [OrderController::class, 'all'])->name('orders.orders');
+            Route::get('shipment-locator', [OrderController::class, 'shipment'])->name('orders.shipment-locator');
+            Route::get('dashboard', [OrderController::class, 'dashboard'])->name('orders.dashboard');
+        });
+    });
+
+    Route::group(['prefix' => 'order'], function () {
+        Route::group(['middleware' => 'jwt'], function () {
+            Route::post('create', [OrderController::class, 'store'])->name('order.create');
+            Route::get('{uuid}', [OrderController::class, 'fetch'])->name('order.fetch');
+            Route::put('{uuid}', [OrderController::class, 'edit'])->name('order.edit');
+            Route::delete('{uuid}', [OrderController::class, 'delete'])->name('order.delete');
+        });
+    });
+
 
 
 
