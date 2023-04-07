@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
 
-            $table->uuid('user_id');
-            $table->uuid('order_status_id');
-            $table->uuid('payment_id');
+            $table->uuid('user_uuid');
+            $table->uuid('order_status_uuid');
+            $table->uuid('payment_uuid')->nullable();
 
             $table->json('products');
             $table->json('address');
