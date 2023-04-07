@@ -1,5 +1,8 @@
 FROM php:8.2-fpm
 
+# Add NodeSource Node.js Binary Distributions
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
         nginx \
@@ -9,6 +12,8 @@ RUN apt-get update && apt-get install -y \
         libonig-dev \
         libxml2-dev \
         curl \
+        nodejs \
+        build-essential \
         wget \
         vim \
         libzip-dev \
@@ -29,6 +34,9 @@ RUN docker-php-ext-install \
         && pecl install xdebug \
         && docker-php-ext-enable xdebug
 
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -43,6 +51,12 @@ COPY . .
 
 # Install composer dependencies
 RUN composer install --no-interaction --prefer-dist
+
+# Install npm dependencies
+RUN npm install
+
+# Build npm dependencies
+RUN npm run build
 
 # Expose port 80
 EXPOSE 80
