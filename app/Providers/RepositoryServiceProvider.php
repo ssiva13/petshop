@@ -20,6 +20,8 @@ use App\Repositories\Post\PostInterface;
 use App\Repositories\Post\PostRepository;
 use App\Repositories\Promotion\PromotionInterface;
 use App\Repositories\Promotion\PromotionRepository;
+use App\Repositories\Order\OrderInterface;
+use App\Repositories\Order\OrderRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -38,6 +40,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PaymentInterface::class, PaymentRepository::class);
         $this->app->bind(PostInterface::class, PostRepository::class);
         $this->app->bind(PromotionInterface::class, PromotionRepository::class);
+        $this->app->bind(OrderInterface::class, OrderRepository::class);
     }
 
     /**
