@@ -8,7 +8,9 @@
 namespace App\Repositories\Promotion;
 
 use App\Models\Promotion;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class PromotionRepository implements PromotionInterface
 {
@@ -42,7 +44,12 @@ class PromotionRepository implements PromotionInterface
 
     public function getPaginated(array $data = [])
     {
-        return Promotion::orderBy($data['sortBy'], $data['desc'])
+        $date = ($data['valid']) ? Carbon::now()->toDateString() : null;
+        return Promotion::when($date, function ($query) use ($date) {
+                return $query->whereRaw('JSON_EXTRACT(`metadata` , "$.valid_from") <= ?', [ $date ])
+                    ->whereRaw('JSON_EXTRACT(`metadata` , "$.valid_to") >= ?', [ $date ]);
+            })
+            ->orderBy($data['sortBy'], $data['desc'])
             ->paginate((int) $data['limit'], page: $data['page']);
     }
 }

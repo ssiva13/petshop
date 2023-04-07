@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static find($uuid)
  * @method static create(array $data)
  * @method static orderBy(mixed $sortBy, mixed $desc)
+ * @method static when(mixed $valid, \Closure $param)
  */
 class Promotion extends Model
 {
@@ -54,7 +55,7 @@ class Promotion extends Model
     ];
 
     /**
-     * The attributes that should be casted to native types.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
