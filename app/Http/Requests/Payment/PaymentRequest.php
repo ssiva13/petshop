@@ -37,7 +37,7 @@ class PaymentRequest extends FormRequest
            'details' => $details ? json_encode($details) : null
         ]);
     }
-    
+
     public function messages(): array
     {
         return [
