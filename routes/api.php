@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\OrderStatusController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\PromotionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -113,6 +115,15 @@ Route::group(['prefix' => 'v1'], function () {
             Route::put('{uuid}', [PaymentController::class, 'edit'])->name('payment.edit');
             Route::delete('{uuid}', [PaymentController::class, 'delete'])->name('payment.delete');
         });
+    });
+
+    // MainPage API endpoint
+    Route::group(['prefix' => 'main'], function () {
+        // Posts or Blogs Endpoints
+        Route::get('blog/{uuid}', [PostController::class, 'fetch'])->name('main.blogs');
+        Route::get('blog', [PostController::class, 'all'])->name('main.blog');
+        // Promotions Endpoints
+        Route::get('promotions', [PromotionController::class, 'all'])->name('main.promotions');
     });
 
 
