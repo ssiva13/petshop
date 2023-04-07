@@ -64,7 +64,7 @@ class Product extends Model
      */
     protected $casts = [
         'title' => 'string', 'price' => 'double', 'description' => 'string', 'created_at' => 'timestamp',
-        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp'
+        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp', 'metadata' => 'array'
     ];
 
     /**

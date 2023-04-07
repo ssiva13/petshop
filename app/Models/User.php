@@ -114,6 +114,16 @@ class User extends Authenticatable
      * Model Relationships
      * ----------------------------
      */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(User::class, 'user_uuid', 'uuid');
+    }
+
+     public function file(): HasOne
+    {
+        return $this->hasOne(File::class, 'avatar', 'uuid');
+    }
+
 
     /* ----------------------------
      * Model Scopes

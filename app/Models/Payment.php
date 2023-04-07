@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -58,7 +59,9 @@ class Payment extends Model
      * @var array
      */
     protected $casts = [
-        'type' => 'string', 'created_at' => 'timestamp', 'updated_at' => 'timestamp', 'deleted_at' => 'timestamp'
+        'type' => 'string', 'created_at' => 'timestamp',
+        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp',
+        'details' => 'array'
     ];
 
     /**
@@ -80,6 +83,11 @@ class Payment extends Model
     // Scopes...
 
     // Relations ...
+    public function order(): HasOne
+    {
+        return $this->hasOne(Order::class, 'payment_uuid', 'uuid');
+    }
+
 
     // Functions ...
 }

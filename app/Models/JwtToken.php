@@ -59,7 +59,9 @@ class JwtToken extends Model
      */
     protected $casts = [
         'created_at' => 'timestamp', 'expires_at' => 'timestamp', 'last_used_at' => 'timestamp',
-        'refreshed_at' => 'timestamp', 'token_title' => 'string', 'unique_id' => 'string', 'updated_at' => 'timestamp',
+        'refreshed_at' => 'timestamp', 'token_title' => 'string',
+        'unique_id' => 'string', 'updated_at' => 'timestamp',
+        'permissions' => 'array', 'restrictions' => 'array',
     ];
 
     /**

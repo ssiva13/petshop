@@ -60,7 +60,8 @@ class Post extends Model
      * @var array
      */
     protected $casts = [
-        'title' => 'string', 'slug' => 'string', 'content' => 'string', 'created_at' => 'timestamp', 'updated_at' => 'timestamp', 'deleted_at' => 'timestamp'
+        'title' => 'string', 'slug' => 'string', 'content' => 'string', 'created_at' => 'timestamp',
+        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp', 'metadata' => 'array'
     ];
 
     /**
