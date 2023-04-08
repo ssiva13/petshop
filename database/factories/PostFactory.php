@@ -23,7 +23,7 @@ class PostFactory extends Factory
         $author =  User::inRandomOrder()->first();
         $file = File::inRandomOrder()->first();
         $metadata = [
-            "image" => $file->uuid,
+            "image" => ($file) ? $file->uuid : null,
             "author" => $author->first_name. ' '. $author->last_name
         ];
         $metadata = json_encode($metadata);
@@ -31,7 +31,7 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'content' => $this->faker->paragraph,
+            'content' => $this->faker->paragraph(4),
             'metadata' => $metadata,
         ];
     }

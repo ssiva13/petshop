@@ -28,9 +28,9 @@ return new class extends Migration
             $table->softDeletes();
 
 
-            $table->foreign('user_id')->references('uuid')->on('users');
-            $table->foreign('order_status_id')->references('uuid')->on('order_statuses');
-            $table->foreign('payment_id')->references('uuid')->on('payments');
+            $table->foreign('user_uuid')->references('uuid')->on('users');
+            $table->foreign('order_status_uuid')->references('uuid')->on('order_statuses');
+            $table->foreign('payment_uuid')->references('uuid')->on('payments');
         });
     }
 

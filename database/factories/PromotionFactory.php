@@ -22,7 +22,7 @@ class PromotionFactory extends Factory
         $file = File::inRandomOrder()->first();
         $validFrom = Carbon::yesterday()->subWeeks(rand(2, 8));
         $metadata = [
-            "image" => $file->uuid,
+            "image" => ($file) ? $file->uuid : null,
             "valid_from" => $validFrom->toDateString(),
             "valid_to" => $validFrom->addWeeks(rand(1,10))->toDateString(),
         ];
@@ -30,7 +30,7 @@ class PromotionFactory extends Factory
 
         return [
             'title' => $title,
-            'content' => $this->faker->paragraph,
+            'content' => $this->faker->paragraph(2),
             'metadata' => $metadata,
         ];
     }
