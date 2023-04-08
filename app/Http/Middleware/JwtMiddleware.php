@@ -64,7 +64,7 @@ class JwtMiddleware
                 new StrictValidAt( $this->clock ),
                 new LooseValidAt( $this->clock )
             );
-            $request->request->add(['uuid' => $token->claims()->get('uuid')]);
+            // $request->request->add(['uuid' => $token->claims()->get('uuid')]);
 
             return $next($request);
 
