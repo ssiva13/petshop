@@ -45,4 +45,8 @@ echo -e "\n${BLUE} Please wait while building Node Packages ... \n ${NC}" \
     && echo -e "\n${GREEN} Node Packages built ... \n ${NC}"
 
 
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
 php artisan key:generate --show
