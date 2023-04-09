@@ -148,7 +148,7 @@ class User extends Authenticatable
      */
     public function orders(): HasMany
     {
-        return $this->hasMany(User::class, 'user_uuid', 'uuid');
+        return $this->hasMany(Order::class, 'user_uuid', 'uuid');
     }
 
     public function file(): HasOne
