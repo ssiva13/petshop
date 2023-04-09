@@ -8,9 +8,13 @@
 namespace App\Repositories\User;
 
 use App\Models\JwtToken;
+use App\Models\PasswordReset;
 use App\Models\User;
+use App\Transformer\OrderTransformer;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Lcobucci\JWT\UnencryptedToken;
 
 class UserRepository implements UserInterface
@@ -30,6 +34,11 @@ class UserRepository implements UserInterface
         return User::findOrFail($uuid);
     }
 
+    public function getByUuidAndEmail($uuid, $email)
+    {
+        return User::where('uuid', $uuid)->where('email', $email)->first();
+    }
+
     public function delete($uuid)
     {
         if (!$user = User::find($uuid)) {
@@ -47,12 +56,16 @@ class UserRepository implements UserInterface
         return User::create($data);
     }
 
-    public function update($uuid, array $data)
+    public function update($uuid, array $data): bool|array
     {
-        return User::find($uuid)->update($data);
+        $order = User::find($uuid);
+        if ($order->update($data)) {
+            return $data;
+        }
+        return false;
     }
 
-    public function saveAuthToken(UnencryptedToken $authToken)
+    public function saveAuthToken(UnencryptedToken $authToken): void
     {
         $jwtToken = new JwtToken();
         $jwtToken->unique_id = $authToken->claims()->get('jti');
@@ -90,4 +103,64 @@ class UserRepository implements UserInterface
             })
             ->orderBy($data['sortBy'], $data['desc'])->paginate((int)$data['limit'], page: $data['page']);
     }
+
+    /**
+     * @param $user
+     * @return PasswordReset
+     */
+    public function getResetToken($user)
+    {
+        $tokenrepo = app('auth.password')->broker('api-users')->getRepository();
+        return $tokenrepo->create($user);
+    }
+
+    /**
+     * @param $user
+     * @param $request
+     * @return bool
+     */
+    public function resetPassword($user, $request): bool
+    {
+        $tokenrepo = app('auth.password')->broker('api-users')->getRepository();
+        if( $token = $tokenrepo->exists($user, $request->get('token')) ){
+            $reset = $user->update([
+                'password' => Hash::make($request->get('password'))
+            ]);
+            if($reset){
+                $tokenrepo->delete($user);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getUserOrders($user, $data): array
+    {
+        $orders = $user->orders()->with([
+            'orderStatus' => function ($query) {
+                return $query->select('uuid', 'title', 'created_at', 'updated_at');
+            },
+            'user' => function ($query) {
+                return $query->select([
+                    'uuid',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'email_verified_at',
+                    'avatar',
+                    'address',
+                    'phone_number',
+                    'is_marketing',
+                    'created_at',
+                    'updated_at',
+                    'last_login_at',
+                ]);
+            },
+        ]);
+        $orders->orderBy($data['sortBy'], $data['desc']);
+        return (new OrderTransformer())->transformPaginator(
+            $orders->paginate((int)$data['limit'], page: $data['page'])
+        );
+    }
+
 }
