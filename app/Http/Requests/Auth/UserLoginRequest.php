@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\RequestErrors;
 
-class UserLoginRequest extends FormRequest
+class UserLoginRequest extends UserRequest
 {
     use RequestErrors;
 
@@ -20,7 +19,7 @@ class UserLoginRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, Rule|array|string>
+     * @return array
      */
     public function rules(): array
     {

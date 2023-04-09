@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\RequestErrors;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -35,6 +36,14 @@ class UserRequest extends FormRequest
             'password' => 'required|string|min:8|confirmed',
             'address' => 'required|string|max:255',
             'phone_number' => 'required|string|min:11',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.unique' => 'Email is already registered. Please try again.!',
+            'email.exists' => 'We couldn’t find that email. Please try again.!',
         ];
     }
 }
