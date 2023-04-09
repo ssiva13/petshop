@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Carbon\CarbonTimeZone;
+use DateTimeZone;
 use Illuminate\Support\ServiceProvider;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\JwtFacade;
@@ -43,7 +43,7 @@ class JwtServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->clock = new SystemClock(new CarbonTimeZone('app.timezone'));
+        $this->clock = new SystemClock(new DateTimeZone('app.timezone'));
         $this->signer = new Sha256();
         $this->key = InMemory::base64Encoded(config('jwt.key'));
         $this->issuer = config('app.url');
