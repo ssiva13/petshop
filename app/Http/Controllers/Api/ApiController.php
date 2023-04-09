@@ -75,5 +75,5 @@ class ApiController extends Controller
         $token = app(Parser::class, ['token' => $token]);
         return $token->claims()->get('user_uuid');
     }
-    
+
 }

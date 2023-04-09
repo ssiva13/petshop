@@ -49,8 +49,8 @@ class PaymentController extends ApiController
             'sortBy' => $request->get('sortBy', 'created_at'),
             'desc' => $request->get('desc', true) ? 'desc' : 'asc',
         ];
-        $brands = $this->paymentRepository->getPaginated($data);
-        return $this->sendSuccessResponse($brands, errors: null, extra: null);
+        $payments = $this->paymentRepository->getPaginated($data);
+        return $this->sendSuccessResponse($payments, errors: null, extra: null);
     }
 
     /**

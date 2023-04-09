@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\Auth\UserRequest;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

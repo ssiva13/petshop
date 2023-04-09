@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use DateTimeZone;
+use Exception as ExceptionAlias;
 use Illuminate\Support\ServiceProvider;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\JwtFacade;
@@ -40,10 +41,11 @@ class JwtServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
+     * @throws ExceptionAlias
      */
     public function boot(): void
     {
-        $this->clock = new SystemClock(new DateTimeZone('app.timezone'));
+        $this->clock = new SystemClock(new DateTimeZone(config('app.timezone')));
         $this->signer = new Sha256();
         $this->key = InMemory::base64Encoded(config('jwt.key'));
         $this->issuer = config('app.url');
