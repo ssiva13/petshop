@@ -7,14 +7,19 @@
 
 namespace App\Repositories\Order;
 
+use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Transformer\OrderTransformer;
 use Carbon\Carbon;
+use Dompdf\Css\Stylesheet;
+use Dompdf\Dompdf;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Lcobucci\JWT\Token\Parser;
 
 class OrderRepository implements OrderInterface
 {
@@ -41,14 +46,15 @@ class OrderRepository implements OrderInterface
         $items = json_decode($data['products']);
         $orderDetails = [ 'amount' => 0 ];
         foreach ($items as $item){
-            $product = Product::find($item->product);
-            $item->price = $product->price;
-            $item->uuid = $product->uuid;
-            $item->product = $product->title;
-            $amount = $item->price * $item->quantity;
+            if($product = Product::find($item->product)){
+                $item->price = $product->price;
+                $item->uuid = $product->uuid;
+                $item->product = $product->title;
+                $amount = $item->price * $item->quantity;
 
-            $orderDetails['products'][] = $item;
-            $orderDetails['amount'] = $orderDetails['amount'] + $amount;
+                $orderDetails['products'][] = $item;
+                $orderDetails['amount'] = $orderDetails['amount'] + $amount;
+            }
         }
         return $orderDetails;
     }
@@ -139,6 +145,56 @@ class OrderRepository implements OrderInterface
             }
         }
         return $data;
+    }
+
+    /**
+     * @param \App\Http\Requests\Order\OrderRequest $request
+     *
+     * @return array
+     */
+    public function getOrderRequest(OrderRequest $request): array
+    {
+        $token = app(Parser::class, ['token' => $request->bearerToken()]);
+        $request->merge(['user_uuid' => $token->claims()->get('uuid')]);
+
+        return $request->except(['products']);
+    }
+
+    public function generateInvoice($order): bool|string
+    {
+        $customer = $order->user;
+        $payment = $order->payment;
+        $products = $order->products;
+        $paymentType = $order->payment->paymentType;
+        $details = json_decode($order->payment->details);
+        $address = json_decode($order->address);
+
+        $filename = "Invoice {$order->uuid}-{$customer->uuid}.pdf";
+
+        // Set up the PDF document
+        $pdf = new Dompdf();
+        $arguments = compact('order', 'customer', 'payment', 'products', 'paymentType', 'details', 'address');
+        $view = view('order.invoice', $arguments);
+
+
+        // Load external CSS styles
+        $pdf->getOptions()->setIsFontSubsettingEnabled(true);
+        $pdf->getOptions()->setIsPhpEnabled(true);
+        $pdf->getOptions()->setIsHtml5ParserEnabled(true);
+        $pdf->getOptions()->setChroot(public_path('app'));
+        $pdf->loadHtml($view);
+        // Customize the PDF settings
+        $pdf->setPaper('A4');
+        // Generate the PDF and return the response
+        $pdf->render();
+
+        $invoice = file_put_contents($filename, $pdf->output());
+
+        if($orderInvoice = Storage::disk()->putFileAs('pet-shop/invoices', $filename, $filename)){
+            unlink(public_path($filename));
+            return $orderInvoice;
+        }
+        return false;
     }
 
 }
