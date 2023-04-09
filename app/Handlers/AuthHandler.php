@@ -9,6 +9,7 @@ namespace App\Handlers;
 
 use App\Models\User;
 use DateTimeImmutable;
+use DateTimeZone;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\JwtFacade;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -27,7 +28,7 @@ class AuthHandler
 
     public function __construct()
     {
-        $this->clock = new SystemClock(new \DateTimeZone(config('app.timezone')));
+        $this->clock = new SystemClock(new DateTimeZone(config('app.timezone')));
         $this->signer = new Sha256();
         $this->key = InMemory::base64Encoded(config('jwt.key'));
         $this->issuer = config('app.url');
@@ -42,17 +43,18 @@ class AuthHandler
             $this->signer,
             $this->key,
             static fn(
-                Builder $builder, DateTimeImmutable $issuedAt
+                Builder $builder,
+                DateTimeImmutable $issuedAt
             ): Builder => $builder->issuedBy($issuer)
-                                ->identifiedBy(uniqid())
-                                ->withClaim('email', $user->email)
-                                ->withClaim('uuid', $user->uuid)
-                                ->withClaim('is_admin', (bool) $user->is_admin)
-                                ->permittedFor($permittedFor)
-                                ->expiresAt(
-                                    $issuedAt->modify('+30 minutes')
-                                        ->setTimezone(new \DateTimeZone(config('app.timezone')))
-                                )
+                ->identifiedBy(uniqid())
+                ->withClaim('email', $user->email)
+                ->withClaim('user_uuid', $user->uuid)
+                ->withClaim('is_admin', (bool)$user->is_admin)
+                ->permittedFor($permittedFor)
+                ->expiresAt(
+                    $issuedAt->modify('+30 minutes')
+                        ->setTimezone(new DateTimeZone(config('app.timezone')))
+                )
         );
     }
 }

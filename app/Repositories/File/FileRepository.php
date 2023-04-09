@@ -19,7 +19,7 @@ class FileRepository implements FileInterface
 
     public function create(array $data)
     {
-        if($filename = Storage::disk()->putFile($data['path'], $data['file'])){
+        if ($filename = Storage::disk()->putFile($data['path'], $data['file'])) {
             $data['path'] = $filename;
             $data['size'] = $this->bytesToHuman($data['size']);
             return File::create($data);

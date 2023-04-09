@@ -24,7 +24,7 @@ class PostRepository implements PostInterface
 
     public function delete($uuid): bool
     {
-        if(!$user = Post::find($uuid)){
+        if (!$user = Post::find($uuid)) {
             return false;
         }
         return $user->delete();
@@ -43,6 +43,6 @@ class PostRepository implements PostInterface
     public function getPaginated(array $data = [])
     {
         return Post::orderBy($data['sortBy'], $data['desc'])
-            ->paginate((int) $data['limit'], page: $data['page']);
+            ->paginate((int)$data['limit'], page: $data['page']);
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Http\Requests\OrderStatus;
 
 use App\Http\Requests\RequestErrors;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
 class OrderStatusRequest extends FormRequest
 {
     use RequestErrors;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -20,7 +22,7 @@ class OrderStatusRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, Rule|array|string>
      */
     public function rules(): array
     {
@@ -33,7 +35,7 @@ class OrderStatusRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-           'slug' => Str::slug($this->get('title'))
+            'slug' => Str::slug($this->get('title'))
         ]);
     }
 }

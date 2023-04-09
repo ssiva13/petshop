@@ -24,7 +24,7 @@ class CategoryRepository implements CategoryInterface
 
     public function delete($uuid): bool
     {
-        if(!$user = Category::find($uuid)){
+        if (!$user = Category::find($uuid)) {
             return false;
         }
         return $user->delete();

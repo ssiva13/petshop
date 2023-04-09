@@ -24,7 +24,7 @@ class PaymentRepository implements PaymentInterface
 
     public function delete($uuid): bool
     {
-        if(!$user = Payment::find($uuid)){
+        if (!$user = Payment::find($uuid)) {
             return false;
         }
         return $user->delete();

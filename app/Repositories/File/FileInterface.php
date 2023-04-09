@@ -10,5 +10,6 @@ namespace App\Repositories\File;
 interface FileInterface
 {
     public function getByUUID($uuid);
+
     public function create(array $data);
 }

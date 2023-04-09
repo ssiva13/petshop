@@ -10,8 +10,12 @@ namespace App\Repositories;
 interface ModelInterface
 {
     public function getAll();
+
     public function getByUUID($uuid);
+
     public function delete($uuid);
+
     public function create(array $data);
+
     public function update($uuid, array $data);
 }

@@ -14,22 +14,7 @@ use League\Fractal\TransformerAbstract;
 
 class OrderTransformer extends TransformerAbstract
 {
-    public function transform(Order $order): array
-    {
-        return [
-            'amount' => $order->amount,
-            'created_at' => $order->created_at,
-            'delivery_fee' => $order->delivery_fee,
-            'products' => $order->products,
-            'shipped_at' => $order->shipped_at,
-            'uuid' => $order->uuid,
-            'order_status' => $order->orderStatus,
-            'user' => $order->user,
-        ];
-    }
-
     public function transformPaginator(LengthAwarePaginator $paginator): array
-
     {
         return [
             'current_page' => $paginator->currentPage(),
@@ -49,14 +34,28 @@ class OrderTransformer extends TransformerAbstract
     }
 
     /**
-     * @param \Illuminate\Pagination\LengthAwarePaginator $paginator
+     * @param LengthAwarePaginator $paginator
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getCollection(LengthAwarePaginator $paginator): Collection
     {
         return collect($paginator->getCollection())->map(function ($order) {
             return $this->transform($order);
         });
+    }
+
+    public function transform(Order $order): array
+    {
+        return [
+            'amount' => $order->amount,
+            'created_at' => $order->created_at,
+            'delivery_fee' => $order->delivery_fee,
+            'products' => $order->products,
+            'shipped_at' => $order->shipped_at,
+            'uuid' => $order->uuid,
+            'order_status' => $order->orderStatus,
+            'user' => $order->user,
+        ];
     }
 }

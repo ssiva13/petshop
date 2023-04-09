@@ -24,7 +24,7 @@ class OrderStatusRepository implements OrderStatusInterface
 
     public function delete($uuid): bool
     {
-        if(!$user = OrderStatus::find($uuid)){
+        if (!$user = OrderStatus::find($uuid)) {
             return false;
         }
         return $user->delete();

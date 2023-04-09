@@ -14,10 +14,12 @@ trait RequestErrors
 {
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Error Validating Request',
-            'data'      => $validator->errors()
-        ]));
+        throw new HttpResponseException(
+            response()->json([
+                'success' => false,
+                'message' => 'Error Validating Request',
+                'data' => $validator->errors()
+            ])
+        );
     }
 }

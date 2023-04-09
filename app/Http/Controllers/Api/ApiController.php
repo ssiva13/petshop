@@ -50,10 +50,13 @@ class ApiController extends Controller
      * @param array $errorTrace
      * @param int $status
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function throwError($message, array $errorTrace = [], int $status = HttpResponse::HTTP_INTERNAL_SERVER_ERROR): JsonResponse
-    {
+    protected function throwError(
+        $message,
+        array $errorTrace = [],
+        int $status = HttpResponse::HTTP_INTERNAL_SERVER_ERROR
+    ): JsonResponse {
         $response = [
             'success' => false,
             'data' => [],

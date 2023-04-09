@@ -24,7 +24,7 @@ class BrandRepository implements BrandInterface
 
     public function delete($uuid): bool
     {
-        if(!$user = Brand::find($uuid)){
+        if (!$user = Brand::find($uuid)) {
             return false;
         }
         return $user->delete();

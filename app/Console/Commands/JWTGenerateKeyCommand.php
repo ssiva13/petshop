@@ -47,7 +47,7 @@ class JWTGenerateKeyCommand extends Command
         }
         if (Str::contains(file_get_contents($path), 'JWT_KEY') === false) {
             // create new entry
-            file_put_contents($path, PHP_EOL."JWT_KEY=$key".PHP_EOL, FILE_APPEND);
+            file_put_contents($path, PHP_EOL . "JWT_KEY=$key" . PHP_EOL, FILE_APPEND);
         } else {
             if ($this->option('always-no')) {
                 $this->comment('Secret key already exists. Skipping...');
@@ -59,12 +59,26 @@ class JWTGenerateKeyCommand extends Command
                 return;
             }
             // update existing entry
-            file_put_contents($path, str_replace(
-                'JWT_KEY='.$this->laravel['config']['jwt.key'],
-                'JWT_KEY='.$key, file_get_contents($path)
-            ));
+            file_put_contents(
+                $path,
+                str_replace(
+                    'JWT_KEY=' . $this->laravel['config']['jwt.key'],
+                    'JWT_KEY=' . $key,
+                    file_get_contents($path)
+                )
+            );
         }
         $this->displayKey($key);
+    }
+
+    /**
+     * Get the .env file path.
+     *
+     * @return string
+     */
+    protected function envPath(): string
+    {
+        return $this->laravel->basePath('.env');
     }
 
     /**
@@ -87,17 +101,9 @@ class JWTGenerateKeyCommand extends Command
      */
     protected function isConfirmed(): bool
     {
-        return $this->option('force') || $this->confirm('This will invalidate all existing tokens. Are you sure you want to override the secret key?');
-    }
-
-    /**
-     * Get the .env file path.
-     *
-     * @return string
-     */
-    protected function envPath(): string
-    {
-        return $this->laravel->basePath('.env');
+        return $this->option('force') || $this->confirm(
+                'This will invalidate all existing tokens. Are you sure you want to override the secret key?'
+            );
     }
 
 }

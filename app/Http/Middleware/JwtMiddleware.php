@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use DateTimeZone;
+use Exception;
 use Illuminate\Http\Request;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\JwtFacade;
@@ -16,19 +18,19 @@ use Symfony\Component\HttpFoundation\Response;
 class JwtMiddleware
 {
     /**
-     * @var \Lcobucci\JWT\Signer\Key\InMemory
+     * @var InMemory
      */
     protected InMemory $key;
     /**
-     * @var \Lcobucci\JWT\Signer\Hmac\Sha256
+     * @var Sha256
      */
     protected Sha256 $signer;
     /**
-     * @var \Lcobucci\Clock\SystemClock
+     * @var SystemClock
      */
     protected SystemClock $clock;
     /**
-     * @var \Lcobucci\JWT\Validation\Constraint\SignedWith
+     * @var SignedWith
      */
     protected SignedWith $signedWith;
 
@@ -36,17 +38,17 @@ class JwtMiddleware
     {
         $this->signer = new Sha256();
         $this->key = InMemory::base64Encoded(config('jwt.key'));
-        $this->clock = new SystemClock(new \DateTimeZone(config('app.timezone')));
+        $this->clock = new SystemClock(new DateTimeZone(config('app.timezone')));
         $this->signedWith = new SignedWith($this->signer, $this->key);
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param Request $request
+     * @param Closure(Request): (Response) $next
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -61,14 +63,13 @@ class JwtMiddleware
             $token = (new JwtFacade())->parse(
                 $beareToken,
                 $this->signedWith,
-                new StrictValidAt( $this->clock ),
-                new LooseValidAt( $this->clock )
+                new StrictValidAt($this->clock),
+                new LooseValidAt($this->clock)
             );
             // $request->request->add(['uuid' => $token->claims()->get('uuid')]);
 
             return $next($request);
-
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $response = [
                 'success' => false,
                 'data' => [],
@@ -78,6 +79,5 @@ class JwtMiddleware
             ];
             return response()->json($response, 401);
         }
-
     }
 }

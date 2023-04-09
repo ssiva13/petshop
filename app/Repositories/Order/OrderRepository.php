@@ -12,7 +12,6 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Transformer\OrderTransformer;
 use Carbon\Carbon;
-use Dompdf\Css\Stylesheet;
 use Dompdf\Dompdf;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,7 +34,7 @@ class OrderRepository implements OrderInterface
 
     public function delete($uuid): bool
     {
-        if(!$user = Order::find($uuid)){
+        if (!$user = Order::find($uuid)) {
             return false;
         }
         return $user->delete();
@@ -44,14 +43,13 @@ class OrderRepository implements OrderInterface
     public function processOrder(array $data): array
     {
         $items = json_decode($data['products']);
-        $orderDetails = [ 'amount' => 0 ];
-        foreach ($items as $item){
-            if($product = Product::find($item->product)){
+        $orderDetails = ['amount' => 0];
+        foreach ($items as $item) {
+            if ($product = Product::find($item->product)) {
                 $item->price = $product->price;
                 $item->uuid = $product->uuid;
                 $item->product = $product->title;
                 $amount = $item->price * $item->quantity;
-
                 $orderDetails['products'][] = $item;
                 $orderDetails['amount'] = $orderDetails['amount'] + $amount;
             }
@@ -62,7 +60,7 @@ class OrderRepository implements OrderInterface
     public function update($uuid, array $data): bool|array
     {
         $order = Order::find($uuid);
-        if($order->update($data)){
+        if ($order->update($data)) {
             return $data;
         }
         return false;
@@ -76,47 +74,53 @@ class OrderRepository implements OrderInterface
     public function getPaginated(array $data = []): LengthAwarePaginator
     {
         $orders = Order::with([
-                'payment', 'orderStatus', 'user'
-            ]);
-        return $orders->orderBy($data['sortBy'], $data['desc'])
-            ->paginate((int) $data['limit'], page: $data['page']);
+            'payment',
+            'orderStatus',
+            'user',
+        ]);
+        return $orders->orderBy($data['sortBy'], $data['desc'])->paginate((int)$data['limit'], page: $data['page']);
     }
 
     public function getOrderSummaries(array $data = [], $shipped = false): array
     {
         $data = $this->getDateRange($data);
         $orders = Order::when($data['dateRange'], function ($query, $value) {
-                return $query->when($value['from'], function ($query, $val) {
-                    return $query->where('created_at', ">=", $val);
-                })->when($value['to'], function ($query, $val) {
-                    return $query->where('created_at', "<=", $val);
-                });
-            })
-
-            ->when($data['customerUuid'], function ($query, $val) {
-                return $query->where('user_uuid', $val);
-            })
-            ->when($data['orderUuid'], function ($query, $val) {
-                return $query->where('uuid', $val);
-            })
-            ->when($shipped, function ($query) {
-                return $query->whereNotNull('shipped_at');
-            })
-
-            ->with([
-                'orderStatus' => function($query){
-                    return $query->select('uuid', 'title', 'created_at', 'updated_at');
-                },
-                'user' => function($query){
-                    return $query->select([
-                        'uuid', 'first_name', 'last_name', 'email', 'email_verified_at', 'avatar',
-                        'address', 'phone_number', 'is_marketing', 'created_at', 'updated_at', 'last_login_at'
-                    ]);
-                }
-            ]);
+            return $query->when($value['from'], function ($query, $val) {
+                return $query->where('created_at', '>=', $val);
+            })->when($value['to'], function ($query, $val) {
+                return $query->where('created_at', '<=', $val);
+            });
+        })->when($data['customerUuid'], function ($query, $val) {
+            return $query->where('user_uuid', $val);
+        })->when($data['orderUuid'], function ($query, $val) {
+            return $query->where('uuid', $val);
+        })->when($shipped, function ($query) {
+            return $query->whereNotNull('shipped_at');
+        })->with([
+            'orderStatus' => function ($query) {
+                return $query->select('uuid', 'title', 'created_at', 'updated_at');
+            },
+            'user' => function ($query) {
+                return $query->select([
+                    'uuid',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'email_verified_at',
+                    'avatar',
+                    'address',
+                    'phone_number',
+                    'is_marketing',
+                    'created_at',
+                    'updated_at',
+                    'last_login_at',
+                ]);
+            },
+        ]);
         $orders->orderBy($data['sortBy'], $data['desc']);
-
-        return (new OrderTransformer())->transformPaginator($orders->paginate((int) $data['limit'], page: $data['page']));
+        return (new OrderTransformer())->transformPaginator(
+            $orders->paginate((int)$data['limit'], page: $data['page'])
+        );
     }
 
     /**
@@ -148,15 +152,14 @@ class OrderRepository implements OrderInterface
     }
 
     /**
-     * @param \App\Http\Requests\Order\OrderRequest $request
+     * @param OrderRequest $request
      *
      * @return array
      */
     public function getOrderRequest(OrderRequest $request): array
     {
         $token = app(Parser::class, ['token' => $request->bearerToken()]);
-        $request->merge(['user_uuid' => $token->claims()->get('uuid')]);
-
+        $request->merge(['user_uuid' => $token->claims()->get('user_uuid')]);
         return $request->except(['products']);
     }
 
@@ -168,15 +171,12 @@ class OrderRepository implements OrderInterface
         $paymentType = $order->payment->paymentType;
         $details = json_decode($order->payment->details);
         $address = json_decode($order->address);
-
-        $filename = "Invoice {$order->uuid}-{$customer->uuid}.pdf";
-
+        // $filename = "Invoice {$order->uuid}-{$customer->uuid}.pdf";
+        $filename = "$order->uuid.pdf";
         // Set up the PDF document
         $pdf = new Dompdf();
         $arguments = compact('order', 'customer', 'payment', 'products', 'paymentType', 'details', 'address');
         $view = view('order.invoice', $arguments);
-
-
         // Load external CSS styles
         $pdf->getOptions()->setIsFontSubsettingEnabled(true);
         $pdf->getOptions()->setIsPhpEnabled(true);
@@ -190,7 +190,7 @@ class OrderRepository implements OrderInterface
 
         $invoice = file_put_contents($filename, $pdf->output());
 
-        if($orderInvoice = Storage::disk()->putFileAs('pet-shop/invoices', $filename, $filename)){
+        if ($orderInvoice = Storage::disk()->putFileAs('pet-shop/invoices', $filename, $filename)) {
             unlink(public_path($filename));
             return $orderInvoice;
         }

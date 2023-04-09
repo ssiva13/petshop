@@ -3,12 +3,13 @@
 namespace App\Http\Requests\File;
 
 use App\Http\Requests\RequestErrors;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\File;
 
 class FileRequest extends FormRequest
 {
     use RequestErrors;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -20,7 +21,7 @@ class FileRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, Rule|array|string>
      */
     public function rules(): array
     {

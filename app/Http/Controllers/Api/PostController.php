@@ -9,10 +9,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Post\PostRequest;
 use App\Repositories\Post\PostRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class PostController extends ApiController
 {
@@ -24,35 +26,47 @@ class PostController extends ApiController
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(PostRequest $request): JsonResponse
     {
         DB::beginTransaction();
-        try{
-            $post = $this->postRepository->create( $request->all());
+        try {
+            $post = $this->postRepository->create($request->all());
             DB::commit();
             return $this->sendSuccessResponse($post, Response::HTTP_CREATED);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollback();
             return $this->throwError($exception->getMessage(), $exception->getTrace(), $exception->getCode());
         }
     }
 
+    public function all(Request $request): JsonResponse
+    {
+        $data = [
+            'page' => $request->get('page', 1),
+            'limit' => $request->get('limit', 15),
+            'sortBy' => $request->get('sortBy', 'created_at'),
+            'desc' => $request->get('desc', true) ? 'desc' : 'asc',
+        ];
+        $posts = $this->postRepository->getPaginated($data);
+        return $this->sendSuccessResponse($posts, errors: null, extra: null);
+    }
+
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function edit($uuid, PostRequest $request): JsonResponse
     {
-        if(!$post = $this->postRepository->getByUUID($uuid)){
+        if (!$post = $this->postRepository->getByUUID($uuid)) {
             return $this->sendErrorResponse('Post not found!', Response::HTTP_NOT_FOUND);
         }
         DB::beginTransaction();
-        try{
-            $post->update( $request->except(['uuid']) );
+        try {
+            $post->update($request->except(['uuid']));
             DB::commit();
             return $this->sendSuccessResponse($post);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollback();
             return $this->throwError($exception->getMessage(), $exception->getTrace());
         }
@@ -60,37 +74,25 @@ class PostController extends ApiController
 
     public function fetch($uuid): JsonResponse
     {
-        if(!$post = $this->postRepository->getByUUID($uuid)){
+        if (!$post = $this->postRepository->getByUUID($uuid)) {
             return $this->sendErrorResponse('Post not found!', Response::HTTP_NOT_FOUND);
         }
         return $this->sendSuccessResponse($post);
     }
 
-    public function all(Request $request): JsonResponse
-    {
-        $data = [
-            "page" =>  $request->get('page', 1),
-            "limit" =>  $request->get('limit', 15),
-            "sortBy" =>  $request->get('sortBy', 'created_at'),
-            "desc" =>  $request->get('desc', true) ? 'desc' : 'asc',
-        ];
-        $posts = $this->postRepository->getPaginated($data);
-        return $this->sendSuccessResponse($posts, errors: null, extra: null);
-    }
-
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function delete($uuid): JsonResponse
     {
         DB::beginTransaction();
-        try{
-            if(!$this->postRepository->delete($uuid)){
+        try {
+            if (!$this->postRepository->delete($uuid)) {
                 return $this->sendErrorResponse('Post not found!', Response::HTTP_NOT_FOUND);
             }
             DB::commit();
             return $this->sendSuccessResponse([]);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollback();
             return $this->throwError($exception->getMessage(), $exception->getTrace());
         }

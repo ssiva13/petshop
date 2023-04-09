@@ -32,7 +32,7 @@ class UserRepository implements UserInterface
 
     public function delete($uuid)
     {
-        if(!$user = User::find($uuid)){
+        if (!$user = User::find($uuid)) {
             return false;
         }
         return $user->delete();
@@ -40,7 +40,7 @@ class UserRepository implements UserInterface
 
     public function create(array $data, $admin = false)
     {
-        if ($admin){
+        if ($admin) {
             $data['is_admin'] = 1;
         }
         $data['password'] = Hash::make($data['password']);
@@ -56,10 +56,10 @@ class UserRepository implements UserInterface
     {
         $jwtToken = new JwtToken();
         $jwtToken->unique_id = $authToken->claims()->get('jti');
-        $jwtToken->user_id = $authToken->claims()->get('uuid');
+        $jwtToken->user_id = $authToken->claims()->get('user_uuid');
         $jwtToken->expires_at = $authToken->claims()->get('exp');
         $jwtToken->created_at = $authToken->claims()->get('iat');
-        $jwtToken->token_title = $authToken->headers()->toString().$authToken->claims()->get('email');
+        $jwtToken->token_title = $authToken->headers()->toString() . $authToken->claims()->get('email');
         // $jwtToken->last_used_at = $token['iat'];
         // $jwtToken->permissions = $token['uuid'];
         // $jwtToken->refreshed_at = $token['uuid'];
@@ -83,7 +83,7 @@ class UserRepository implements UserInterface
                 return $query->where('address', 'LIKE', "%$value%");
             })
             ->when($data['marketing'], function ($query, $value) {
-                return $query->marketing((bool) $value);
+                return $query->marketing((bool)$value);
             })
             ->when($data['created_at'], function ($query, $value) {
                 return $query->where('created_at', $value);
