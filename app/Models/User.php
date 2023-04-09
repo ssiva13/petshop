@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,8 +25,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $last_name
  * @property string $first_name
- * @property boolean $is_marketing
- * @property boolean $is_admin
+ * @property bool $is_marketing
+ * @property bool $is_admin
  * @method static create(array $array)
  * @method static findOrFail($id)
  * @method static find($uuid)
@@ -33,74 +34,104 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, SoftDeletes, HasUuids, HasFactory;
+    use HasApiTokens;
+    use HasFactory;
+    use HasUuids;
+    use Notifiable;
+    use SoftDeletes;
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
     /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'users';
-
+    // protected $primaryKey = 'id';
     /**
      * The primary key for the model.
      *
      * @var string
      */
-    // protected $primaryKey = 'id';
     protected $primaryKey = 'uuid';
-
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'avatar', 'deleted_at', 'last_login_at', 'updated_at', 'created_at', 'remember_token', 'is_marketing',
-        'phone_number', 'address', 'password', 'email_verified_at', 'email', 'is_admin', 'last_name', 'first_name',
+        'avatar',
+        'deleted_at',
+        'last_login_at',
+        'updated_at',
+        'created_at',
+        'remember_token',
+        'is_marketing',
+        'phone_number',
+        'address',
+        'password',
+        'email_verified_at',
+        'email',
+        'is_admin',
+        'last_name',
+        'first_name',
         'uuid',
     ];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'is_admin' , 'id', 'deleted_at'
+        'password',
+        'remember_token',
+        'is_admin',
+        'id',
+        'deleted_at'
     ];
-
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'deleted_at' => 'timestamp', 'last_login_at' => 'timestamp', 'updated_at' => 'timestamp',
-        'created_at' => 'timestamp', 'remember_token' => 'string', 'is_marketing' => 'boolean',
-        'phone_number' => 'string', 'address' => 'string', 'password' => 'string', 'email_verified_at' => 'timestamp',
-        'email' => 'string', 'is_admin' => 'boolean', 'last_name' => 'string', 'first_name' => 'string',
+        'deleted_at' => 'timestamp',
+        'last_login_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'created_at' => 'timestamp',
+        'remember_token' => 'string',
+        'is_marketing' => 'boolean',
+        'phone_number' => 'string',
+        'address' => 'string',
+        'password' => 'string',
+        'email_verified_at' => 'timestamp',
+        'email' => 'string',
+        'is_admin' => 'boolean',
+        'last_name' => 'string',
+        'first_name' => 'string',
     ];
-
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected array $dates = [
-        'deleted_at', 'last_login_at', 'updated_at', 'created_at', 'email_verified_at',
+        'deleted_at',
+        'last_login_at',
+        'updated_at',
+        'created_at',
+        'email_verified_at',
     ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var boolean
-     */
-    public $timestamps = true;
 
     /* ----------------------------
      * Model Relationships
      */
+
     public function jwtTokens(): HasMany
     {
         return $this->hasMany(JwtToken::class);
@@ -110,6 +141,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(JwtToken::class)->latest();
     }
+
     /*
      * Model Relationships
      * ----------------------------
@@ -119,7 +151,7 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'user_uuid', 'uuid');
     }
 
-     public function file(): HasOne
+    public function file(): HasOne
     {
         return $this->hasOne(File::class, 'avatar', 'uuid');
     }

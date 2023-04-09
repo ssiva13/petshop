@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Closure;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,72 +19,80 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static find($uuid)
  * @method static create(array $data)
  * @method static where(string $string, $uuid)
- * @method static when(mixed $first_name, \Closure $param)
+ * @method static when(mixed $first_name, Closure $param)
  * @method static orderBy(mixed $sortBy, mixed $desc)
  */
 class Brand extends Model
 {
-    use SoftDeletes, HasUuids, HasFactory;
+    use HasFactory;
+    use HasUuids;
+    use SoftDeletes;
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
     /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'brands';
-
     /**
      * The primary key for the model.
      *
      * @var string
      */
     protected $primaryKey = 'uuid';
-
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'uuid', 'title', 'slug', 'created_at', 'updated_at', 'deleted_at',
+        'uuid',
+        'title',
+        'slug',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'id', 'deleted_at',
+        'id',
+        'deleted_at',
     ];
-
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'title' => 'string', 'slug' => 'string', 'created_at' => 'timestamp',
-        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp',
+        'title' => 'string',
+        'slug' => 'string',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
     ];
-
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected array $dates = [
-        'created_at', 'updated_at', 'deleted_at',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var boolean
-     */
-    public $timestamps = true;
-
     // Relations ...
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, 'brand_uuid', 'uuid');

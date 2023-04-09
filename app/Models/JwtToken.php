@@ -22,63 +22,74 @@ use Illuminate\Database\Eloquent\Model;
 class JwtToken extends Model
 {
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+    /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'jwt_tokens';
-
     /**
      * The primary key for the model.
      *
      * @var string
      */
     protected $primaryKey = 'id';
-
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'created_at', 'expires_at', 'last_used_at', 'permissions', 'refreshed_at', 'restrictions', 'token_title',
-        'unique_id', 'updated_at', 'user_id',
+        'created_at',
+        'expires_at',
+        'last_used_at',
+        'permissions',
+        'refreshed_at',
+        'restrictions',
+        'token_title',
+        'unique_id',
+        'updated_at',
+        'user_id',
     ];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [];
-
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'created_at' => 'timestamp', 'expires_at' => 'timestamp', 'last_used_at' => 'timestamp',
-        'refreshed_at' => 'timestamp', 'token_title' => 'string',
-        'unique_id' => 'string', 'updated_at' => 'timestamp',
-        'permissions' => 'array', 'restrictions' => 'array',
+        'created_at' => 'timestamp',
+        'expires_at' => 'timestamp',
+        'last_used_at' => 'timestamp',
+        'refreshed_at' => 'timestamp',
+        'token_title' => 'string',
+        'unique_id' => 'string',
+        'updated_at' => 'timestamp',
+        'permissions' => 'array',
+        'restrictions' => 'array',
     ];
-
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected array $dates = [
-        'created_at', 'expires_at', 'last_used_at', 'refreshed_at', 'updated_at',
+        'created_at',
+        'expires_at',
+        'last_used_at',
+        'refreshed_at',
+        'updated_at',
     ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var boolean
-     */
-    public $timestamps = true;
 
     // Scopes...
     // Functions ...

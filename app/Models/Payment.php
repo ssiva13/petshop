@@ -10,79 +10,86 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string $type
- * @property int    $created_at
- * @property int    $updated_at
- * @property int    $deleted_at
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $deleted_at
  * @method static find($uuid)
  * @method static create(array $data)
  * @method static orderBy(mixed $sortBy, mixed $desc)
  */
 class Payment extends Model
 {
-    use SoftDeletes, HasUuids, HasFactory;
+    use HasFactory;
+    use HasUuids;
+    use SoftDeletes;
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
     /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'payments';
-
     /**
      * The primary key for the model.
      *
      * @var string
      */
     protected $primaryKey = 'uuid';
-
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'uuid', 'type', 'details', 'created_at', 'updated_at', 'deleted_at'
+        'uuid',
+        'type',
+        'details',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'id', 'deleted_at'
+        'id',
+        'deleted_at'
     ];
-
     /**
      * The attributes that should be casted to native types.
      *
      * @var array
      */
     protected $casts = [
-        'type' => 'string', 'created_at' => 'timestamp',
-        'updated_at' => 'timestamp', 'deleted_at' => 'timestamp',
+        'type' => 'string',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
         'details' => 'array'
     ];
-
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected array $dates = [
-        'created_at', 'updated_at', 'deleted_at'
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var boolean
-     */
-    public $timestamps = true;
 
     // Scopes...
 
     // Relations ...
+
     public function order(): HasOne
     {
         return $this->hasOne(Order::class, 'payment_uuid', 'uuid');
