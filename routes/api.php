@@ -35,9 +35,15 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::post('create', [UserController::class, 'store'])->name('user.create');
         Route::post('login', [UserController::class, 'login'])->name('user.login');
+        Route::get('logout', [UserController::class, 'logout'])->name('user.logout');
 
         Route::group(['middleware' => 'jwt'], function () {
-            Route::get('/', [UserController::class, 'profile'])->name('user');
+            Route::get('', [UserController::class, 'profile'])->name('user.profile');
+            Route::put('', [UserController::class, 'edit'])->name('user.edit');
+            Route::delete('', [UserController::class, 'delete'])->name('user.delete');
+            Route::post('forgot-password', [UserController::class, 'forgotPassword'])->name('user.forgot-password');
+            Route::post('reset-password-token', [UserController::class, 'resetPassword'])->name('user.reset-password');
+            Route::get('orders', [UserController::class, 'orders'])->name('user.orders');
         });
     });
 
