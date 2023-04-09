@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\CarbonTimeZone;
 use Illuminate\Support\ServiceProvider;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\JwtFacade;
@@ -28,11 +29,11 @@ class JwtServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(Parser::class, function ($app, $bearer) {
-           return (new JwtFacade())->parse(
+            return (new JwtFacade())->parse(
                 $bearer['token'],
                 $this->signedWith,
-                new StrictValidAt( $this->clock ),
-                new LooseValidAt( $this->clock )
+                new StrictValidAt($this->clock),
+                new LooseValidAt($this->clock)
             );
         });
     }
@@ -42,7 +43,7 @@ class JwtServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->clock = new SystemClock(new \DateTimeZone(config('app.timezone')));
+        $this->clock = new SystemClock(new CarbonTimeZone('app.timezone'));
         $this->signer = new Sha256();
         $this->key = InMemory::base64Encoded(config('jwt.key'));
         $this->issuer = config('app.url');

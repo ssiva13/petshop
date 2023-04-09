@@ -8,20 +8,20 @@ use App\Repositories\Category\CategoryInterface;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\File\FileInterface;
 use App\Repositories\File\FileRepository;
+use App\Repositories\Order\OrderInterface;
+use App\Repositories\Order\OrderRepository;
 use App\Repositories\OrderStatus\OrderStatusInterface;
 use App\Repositories\OrderStatus\OrderStatusRepository;
-use App\Repositories\User\UserInterface;
-use App\Repositories\User\UserRepository;
-use App\Repositories\Product\ProductInterface;
-use App\Repositories\Product\ProductRepository;
 use App\Repositories\Payment\PaymentInterface;
 use App\Repositories\Payment\PaymentRepository;
 use App\Repositories\Post\PostInterface;
 use App\Repositories\Post\PostRepository;
+use App\Repositories\Product\ProductInterface;
+use App\Repositories\Product\ProductRepository;
 use App\Repositories\Promotion\PromotionInterface;
 use App\Repositories\Promotion\PromotionRepository;
-use App\Repositories\Order\OrderInterface;
-use App\Repositories\Order\OrderRepository;
+use App\Repositories\User\UserInterface;
+use App\Repositories\User\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
