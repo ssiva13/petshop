@@ -3,11 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\File;
+use App\Models\Promotion;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Promotion>
+ * @extends Factory<Promotion>
  */
 class PromotionFactory extends Factory
 {
@@ -24,7 +25,7 @@ class PromotionFactory extends Factory
         $metadata = [
             "image" => ($file) ? $file->uuid : null,
             "valid_from" => $validFrom->toDateString(),
-            "valid_to" => $validFrom->addWeeks(rand(1,10))->toDateString(),
+            "valid_to" => $validFrom->addWeeks(rand(1, 10))->toDateString(),
         ];
         $metadata = json_encode($metadata);
 

@@ -29,12 +29,11 @@ class PaymentTypeSeeder extends Seeder
                 'title' => 'Bank Transfer',
             ],
         ];
-        foreach ($paymentTypes as $paymentType){
+        foreach ($paymentTypes as $paymentType) {
             $validator = Validator::make($paymentType, $paymentTypeRequest->rules());
             if ($validator->passes()) {
                 PaymentType::create($paymentType);
             }
         }
-
     }
 }

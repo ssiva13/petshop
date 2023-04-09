@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Brand;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Brand>
+ * @extends Factory<Brand>
  */
 class BrandFactory extends Factory
 {
@@ -16,11 +18,11 @@ class BrandFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
-     * @throws \Exception
+     * @throws Exception
      */
     public function definition(): array
     {
-        $this->title = fake()->text(random_int(5,10));
+        $this->title = fake()->text(random_int(5, 10));
         return [
             'title' => $this->title,
             'slug' => Str::slug($this->title),

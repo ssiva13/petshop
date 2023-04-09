@@ -28,7 +28,7 @@ class OrderStatusSeeder extends Seeder
             ['title' => 'Pending payment'],
             ['title' => 'Checkout draft '],
         ];
-        foreach ($paymentTypes as $paymentType){
+        foreach ($paymentTypes as $paymentType) {
             $paymentType['slug'] = Str::slug($paymentType['title']);
             $validator = Validator::make($paymentType, $paymentTypeRequest->rules());
             if ($validator->passes()) {
