@@ -142,6 +142,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('{uuid}', [OrderController::class, 'fetch'])->name('order.fetch');
             Route::put('{uuid}', [OrderController::class, 'edit'])->name('order.edit');
             Route::delete('{uuid}', [OrderController::class, 'delete'])->name('order.delete');
+            Route::get('{uuid}/download', [OrderController::class, 'download'])->name('order.download');
         });
     });
 

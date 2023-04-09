@@ -12,7 +12,9 @@ use App\Repositories\Order\OrderRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderController extends ApiController
 {
@@ -30,8 +32,7 @@ class OrderController extends ApiController
     {
         DB::beginTransaction();
         try{
-            $request->merge(['user_uuid' => $request->input('uuid')]);
-            $orderRequest = $request->except(['products', 'uuid']);
+            $orderRequest = $this->orderRepository->getOrderRequest($request);
             $orderDetails = $this->orderRepository->processOrder( $request->only('products') );
             $data = array_merge($orderDetails, $orderRequest);
             $order = $this->orderRepository->create( $data );
@@ -53,8 +54,7 @@ class OrderController extends ApiController
         }
         DB::beginTransaction();
         try{
-            $request->merge(['user_uuid' => $request->input('uuid')]);
-            $orderRequest = $request->except(['products', 'uuid']);
+            $orderRequest = $this->orderRepository->getOrderRequest($request);
             $orderDetails = $this->orderRepository->processOrder( $request->only('products') );
             $data = array_merge($orderDetails, $orderRequest);
 
@@ -134,6 +134,19 @@ class OrderController extends ApiController
         ];
         $orders = $this->orderRepository->getOrderSummaries($data, true);
         return $this->sendSuccessResponse($orders, errors: null, extra: null);
+    }
+
+    public function download($uuid): StreamedResponse|JsonResponse
+    {
+        if(!$order = $this->orderRepository->getByUUID($uuid)){
+            return $this->sendErrorResponse('File not found!', Response::HTTP_NOT_FOUND);
+        }
+        $orderInvoice = $this->orderRepository->generateInvoice($order);
+
+        if(Storage::missing($orderInvoice)){
+            return $this->sendErrorResponse('File not found in storage!', Response::HTTP_NOT_FOUND);
+        }
+        return Storage::download($orderInvoice, basename($orderInvoice));
     }
 
 }

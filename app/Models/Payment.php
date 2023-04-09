@@ -88,6 +88,11 @@ class Payment extends Model
         return $this->hasOne(Order::class, 'payment_uuid', 'uuid');
     }
 
+    public function paymentType(): HasOne
+    {
+        return $this->hasOne(PaymentType::class, 'slug', 'type');
+    }
+
 
     // Functions ...
 }
