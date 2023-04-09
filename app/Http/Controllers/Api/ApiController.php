@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Api;
 use App\Handlers\AuthHandler;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\UnencryptedToken;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -67,4 +69,11 @@ class ApiController extends Controller
 
         return response()->json($response, 500);
     }
+
+    protected function getUserUuid($token)
+    {
+        $token = app(Parser::class, ['token' => $token]);
+        return $token->claims()->get('user_uuid');
+    }
+    
 }

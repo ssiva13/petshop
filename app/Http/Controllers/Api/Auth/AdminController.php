@@ -8,9 +8,9 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\Auth\UpdateUserRequest;
+use App\Http\Requests\Auth\UserLoginRequest;
+use App\Http\Requests\Auth\UserRequest;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
