@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a1ed3c433bf1a99d4d99839fba88422",
+    "content-hash": "dc2e625fce3d5f7bd154dd961bc6d42a",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3816,6 +3816,111 @@
                 "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
             },
             "time": "2021-12-11T13:40:54+00:00"
+        },
+        {
+            "name": "spatie/array-to-xml",
+            "version": "3.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/array-to-xml.git",
+                "reference": "13f76acef5362d15c71ae1ac6350cc3df5e25e43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/13f76acef5362d15c71ae1ac6350cc3df5e25e43",
+                "reference": "13f76acef5362d15c71ae1ac6350cc3df5e25e43",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2",
+                "pestphp/pest": "^1.21",
+                "spatie/pest-plugin-snapshots": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\ArrayToXml\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://freek.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Convert an array to xml",
+            "homepage": "https://github.com/spatie/array-to-xml",
+            "keywords": [
+                "array",
+                "convert",
+                "xml"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/array-to-xml/tree/3.1.5"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-12-24T13:43:51+00:00"
+        },
+        {
+            "name": "ssiva/currency-exchange",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "./packages/currency-exchange",
+                "reference": "c0b3e1ce4fdff1620b75b841018a5e4e44164d12"
+            },
+            "require": {
+                "darkaonline/l5-swagger": "^8.5",
+                "ext-simplexml": "*",
+                "guzzlehttp/guzzle": "^7.5",
+                "illuminate/support": "*",
+                "nesbot/carbon": "^2.66",
+                "php": "^8.2",
+                "spatie/array-to-xml": "^3.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4.4",
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ssiva\\CurrencyExchange\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Siva",
+                    "email": "simonsiva13@gmail.com"
+                }
+            ],
+            "description": "Currency exchange Library",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "swagger-api/swagger-ui",
@@ -9666,7 +9771,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ssiva/currency-exchange": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
