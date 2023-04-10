@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Token\Parser;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -66,36 +68,39 @@ class AdminControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-//    /**
-//     * @depends test_create_admin
-//     */
-//    public function test_admin_edit_user(): void
-//    {
-//        $adminTestUser = [
-//            'first_name' => 'Mulwa',
-//            'last_name' => 'Simon',
-//            'is_admin' => 1,
-//            'address' => 'PO',
-//            'phone_number' => '254707898345',
-//            'is_marketing' => 1,
-//            'email' => 'marketing_admin_fix@buckhill.co.uk',
-//            'password' => 'marketing_admin',
-//            'password_confirmation' => 'marketing_admin',
-//        ];
-//        $token = Cache::get('jwt_token');
-//
-//        $authToken = app(Parser::class, ['token' => $token]);
-//        $uuid = $authToken->claims()->get('user_uuid') ;
-//
-//        $response = $this->withHeaders([
-//            'Authorization' => 'Bearer ' . $token,
-//        ])->putJson(route('admin.user-edit',  $uuid ), $adminTestUser);
-//
-//        $response->assertStatus(Response::HTTP_OK);
-//
-//        $this->assertDatabaseHas('users', [
-//            'email' => 'marketing_admin_fix@buckhill.co.uk',
-//        ]);
-//    }
+    /**
+     * @depends test_create_admin
+     */
+    public function test_admin_edit_user(): void
+    {
+        $adminTestUser = [
+            'first_name' => 'Mulwa',
+            'last_name' => 'Simon',
+            'is_admin' => 1,
+            'address' => 'PO',
+            'phone_number' => '254707898345',
+            'is_marketing' => 1,
+            'email' => 'marketing_admin_fix@buckhill.co.uk',
+            'password' => Hash::make('marketing_admin'),
+        ];
+
+        $user = User::factory()->create($adminTestUser);
+        $token = Cache::get('jwt_token');
+
+        $testUser = [
+            'first_name' => 'Michael',
+            'last_name' => 'Wamalwa',
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->putJson(route('admin.user-edit',  $user->uuid ), $testUser);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'marketing_admin_fix@buckhill.co.uk',
+        ]);
+    }
 
 }
