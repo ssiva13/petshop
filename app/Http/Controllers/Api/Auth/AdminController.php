@@ -426,7 +426,7 @@ class AdminController extends ApiController
         }
         DB::beginTransaction();
         try {
-            $user->update($request->except(['uuid']));
+            $user = $this->userRepository->update($uuid, $request->except(['uuid']));
             DB::commit();
             return $this->sendSuccessResponse($user);
         } catch (Exception $exception) {
