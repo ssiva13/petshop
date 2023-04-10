@@ -1,0 +1,3 @@
+[submodule "packages/currency-exchange"]
+	path = packages/currency-exchange
+	url = https://github.com/ssiva13/currency-exchange.git
