@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use L5Swagger\L5SwaggerServiceProvider;
 
 return [
 
@@ -200,6 +201,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\JwtServiceProvider::class,
+        L5SwaggerServiceProvider::class,
     ],
 
     /*
