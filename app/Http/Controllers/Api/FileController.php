@@ -16,6 +16,12 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\{Response, StreamedResponse};
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Files",
+ *     description="API endpoints for Files"
+ * )
+ */
 class FileController extends ApiController
 {
     protected FileRepository $fileRepository;

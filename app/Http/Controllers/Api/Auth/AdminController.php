@@ -21,6 +21,13 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Admin",
+ *     description="API endpoints for Admin"
+ * )
+ *
+ */
 class AdminController extends ApiController
 {
     private UserRepository $userRepository;

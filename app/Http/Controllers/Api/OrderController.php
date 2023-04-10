@@ -19,6 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Orders",
+ *     description="API endpoints for Orders"
+ * )
+ *
+ */
 class OrderController extends ApiController
 {
     protected OrderRepository $orderRepository;

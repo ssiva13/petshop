@@ -23,6 +23,13 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="User",
+ *     description="API endpoints for User"
+ * )
+ *
+ */
 class UserController extends ApiController
 {
     private UserRepository $userRepository;

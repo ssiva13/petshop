@@ -17,6 +17,14 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Main Page",
+ *     description="API endpoints for Main Page"
+ * )
+ *
+ */
+
 class PromotionController extends ApiController
 {
     protected PromotionRepository $promotionRepository;

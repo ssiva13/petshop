@@ -18,6 +18,12 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Order Statuses",
+ *     description="API endpoints for Order Statuses"
+ * )
+ */
 class OrderStatusController extends ApiController
 {
     protected OrderStatusRepository $orderStatusRepository;

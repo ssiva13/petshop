@@ -5,10 +5,6 @@
         "contact": {
             "email": "simonsiva13@gmail.com"
         },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
-        },
         "version": "1.0.0"
     },
     "servers": [
@@ -3252,5 +3248,51 @@
                 "scheme": "bearer"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Admin",
+            "description": "API endpoints for Admin"
+        },
+        {
+            "name": "User",
+            "description": "API endpoints for User"
+        },
+        {
+            "name": "Brands",
+            "description": "API endpoints for Brands"
+        },
+        {
+            "name": "Categories",
+            "description": "API endpoints for Categories"
+        },
+        {
+            "name": "Files",
+            "description": "API endpoints for Files"
+        },
+        {
+            "name": "Orders",
+            "description": "API endpoints for Orders"
+        },
+        {
+            "name": "Order Statuses",
+            "description": "API endpoints for Order Statuses"
+        },
+        {
+            "name": "Payments",
+            "description": "API endpoints for Payments"
+        },
+        {
+            "name": "Main Page",
+            "description": "API endpoints for Main Page"
+        },
+        {
+            "name": "Products",
+            "description": "API endpoints for Products"
+        },
+        {
+            "name": "Main Page",
+            "description": "API endpoints for Main Page"
+        }
+    ]
 }

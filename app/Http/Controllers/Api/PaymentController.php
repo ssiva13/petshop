@@ -17,6 +17,12 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Payments",
+ *     description="API endpoints for Payments"
+ * )
+ */
 class PaymentController extends ApiController
 {
     protected PaymentRepository $paymentRepository;

@@ -17,6 +17,12 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Products",
+ *     description="API endpoints for Products"
+ * )
+ */
 class ProductController extends ApiController
 {
     protected ProductRepository $productRepository;

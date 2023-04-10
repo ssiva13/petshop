@@ -18,6 +18,12 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Brands",
+ *     description="API endpoints for Brands"
+ * )
+ */
 class BrandController extends ApiController
 {
     protected BrandRepository $brandRepository;

@@ -18,6 +18,12 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Categories",
+ *     description="API endpoints for Categories"
+ * )
+ */
 class CategoryController extends ApiController
 {
     protected CategoryRepository $categoryRepository;

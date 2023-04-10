@@ -22,12 +22,9 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
  *      title="Pet Shop API - Swagger Documentation",
  *      @OA\Contact(
  *          email="simonsiva13@gmail.com"
- *      ),
- *      @OA\License(
- *          name="Apache 2.0",
- *          url="https://www.apache.org/licenses/LICENSE-2.0.html"
- *      ),
+ *      )
  * )
+ *
  * @OA\SecurityScheme(
  *     type="http",
  *     securityScheme="bearerAuth",
