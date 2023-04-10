@@ -56,7 +56,7 @@ class JwtMiddleware
             // Unauthorized response if token not there
             return response()->json([
                 'error' => 'You are not authorized to access this resource!'
-            ], 403);
+            ], 401);
         }
 
         try {
