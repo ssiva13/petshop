@@ -61,8 +61,8 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     // Category API endpoint
+    Route::get('categories', [CategoryController::class, 'all'])->name('categories');
     Route::group(['prefix' => 'category'], function () {
-        Route::get('categories', [CategoryController::class, 'all'])->name('categories');
         Route::get('{uuid}', [CategoryController::class, 'fetch'])->name('category.fetch');
         Route::group(['middleware' => 'jwt'], function () {
             Route::post('create', [CategoryController::class, 'store'])->name('category.create');
@@ -72,8 +72,8 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     // Brands API endpoint
+    Route::get('brands', [BrandController::class, 'all'])->name('brands');
     Route::group(['prefix' => 'brand'], function () {
-        Route::get('brands', [BrandController::class, 'all'])->name('brands');
         Route::get('{uuid}', [BrandController::class, 'fetch'])->name('brand.fetch');
         Route::group(['middleware' => 'jwt'], function () {
             Route::post('create', [BrandController::class, 'store'])->name('brand.create');
@@ -83,8 +83,8 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     // Order Statuses API endpoint
+    Route::get('order-statuses', [OrderStatusController::class, 'all'])->name('order-statuses');
     Route::group(['prefix' => 'order-status'], function () {
-        Route::get('order-statuses', [OrderStatusController::class, 'all'])->name('order-statuses');
         Route::get('{uuid}', [OrderStatusController::class, 'fetch'])->name('order-status.fetch');
         Route::group(['middleware' => 'jwt'], function () {
             Route::post('create', [OrderStatusController::class, 'store'])->name('order-status.create');
@@ -103,8 +103,8 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     // Products API endpoint
+    Route::get('products', [ProductController::class, 'all'])->name('products');
     Route::group(['prefix' => 'product'], function () {
-        Route::get('products', [ProductController::class, 'all'])->name('products');
         Route::get('{uuid}', [ProductController::class, 'fetch'])->name('product.fetch');
         Route::group(['middleware' => 'jwt'], function () {
             Route::post('create', [ProductController::class, 'store'])->name('product.create');
@@ -114,8 +114,8 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     // Payments API endpoint
+    Route::get('payments', [PaymentController::class, 'all'])->name('payments');
     Route::group(['prefix' => 'payment'], function () {
-        Route::get('payments', [PaymentController::class, 'all'])->name('payments');
         Route::get('{uuid}', [PaymentController::class, 'fetch'])->name('payment.fetch');
         Route::group(['middleware' => 'jwt'], function () {
             Route::post('create', [PaymentController::class, 'store'])->name('payment.create');
@@ -127,8 +127,8 @@ Route::group(['prefix' => 'v1'], function () {
     // MainPage API endpoint
     Route::group(['prefix' => 'main'], function () {
         // Posts or Blogs Endpoints
-        Route::get('blog/{uuid}', [PostController::class, 'fetch'])->name('main.blogs');
-        Route::get('blog', [PostController::class, 'all'])->name('main.blog');
+        Route::get('blog/{uuid}', [PostController::class, 'fetch'])->name('main.blog');
+        Route::get('blog', [PostController::class, 'all'])->name('main.blogs');
         // Promotions Endpoints
         Route::get('promotions', [PromotionController::class, 'all'])->name('main.promotions');
     });

@@ -12,6 +12,7 @@ use App\Repositories\File\FileRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\{DB, Storage};
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\{Response, StreamedResponse};
 use Throwable;
 
@@ -25,7 +26,39 @@ class FileController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *      path="/file/upload",
+     *      operationId="upload_file",
+     *      tags={"Files"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Upload a File",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"file"},
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="file",
+     *                      type="string",
+     *                      format="binary",
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
      * @throws Throwable
+     *
      */
     public function store(FileRequest $request): JsonResponse
     {
@@ -40,6 +73,29 @@ class FileController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/file/{uuid}",
+     *      operationId="download_file",
+     *      tags={"Files"},
+     *      summary="Download a File",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function download($uuid): JsonResponse|StreamedResponse
     {
         if (!$file = $this->fileRepository->getByUUID($uuid)) {

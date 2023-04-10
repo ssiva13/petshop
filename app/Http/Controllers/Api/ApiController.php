@@ -13,7 +13,32 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\UnencryptedToken;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
+
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="Pet Shop API - Swagger Documentation",
+ *      @OA\Contact(
+ *          email="simonsiva13@gmail.com"
+ *      ),
+ *      @OA\License(
+ *          name="Apache 2.0",
+ *          url="https://www.apache.org/licenses/LICENSE-2.0.html"
+ *      ),
+ * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     securityScheme="bearerAuth",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ * @OA\Server(
+ *      url=L5_SWAGGER_CONST_HOST,
+ *      description="Pet Shop API Server"
+ * )
+ */
 
 class ApiController extends Controller
 {

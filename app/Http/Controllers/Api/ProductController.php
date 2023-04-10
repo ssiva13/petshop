@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -26,7 +27,65 @@ class ProductController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *      path="/product/create",
+     *      operationId="create_product",
+     *      tags={"Products"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Create a product",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"category_uuid", "brand_uuid", "title", "price", "description", "metadata", },
+     *                  @OA\Property(
+     *                      property="category_uuid",
+     *                      type="string",
+     *                      description="Category UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="brand_uuid",
+     *                      type="string",
+     *                      description="Brand UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="title",
+     *                      type="string",
+     *                      description="Product title"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="price",
+     *                      type="number",
+     *                      description="Product price"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string",
+     *                      description="Product description"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="metadata",
+     *                      type="object",
+     *                      @OA\Property(property="image", type="string"),
+     *                      @OA\Property(property="brand", type="string"),
+     *                      description="Product metadata"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
      * @throws Throwable
+     *
      */
     public function store(ProductRequest $request): JsonResponse
     {
@@ -41,6 +100,56 @@ class ProductController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/products",
+     *      operationId="products",
+     *      tags={"Products"},
+     *      summary="List all products",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     *)
+     */
     public function all(Request $request): JsonResponse
     {
         $data = [
@@ -58,6 +167,63 @@ class ProductController extends ApiController
     }
 
     /**
+     *
+     * @OA\Put(
+     *      path="/product/{uuid}",
+     *      operationId="edit_product",
+     *      tags={"Products"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Edit a product",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="EditRequest",
+     *                  title="Edit Request",
+     *                  required={"category_uuid", "brand_uuid", "title", "price", "description", "metadata" },
+     *                  @OA\Property(
+     *                      property="category_uuid",
+     *                      type="string",
+     *                      description="Category UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="brand_uuid",
+     *                      type="string",
+     *                      description="Brand UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="title",
+     *                      type="string",
+     *                      description="Product title"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="price",
+     *                      type="number",
+     *                      description="Product price"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string",
+     *                      description="Product description"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="metadata",
+     *                      type="object",
+     *                      @OA\Property(property="image", type="string"),
+     *                      @OA\Property(property="brand", type="string"),
+     *                      description="Product metadata"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      * @throws Throwable
      */
     public function edit($uuid, ProductRequest $request): JsonResponse
@@ -76,6 +242,29 @@ class ProductController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/product/{uuid}",
+     *      operationId="get_product",
+     *      tags={"Products"},
+     *      summary="Fetch a product",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function fetch($uuid): JsonResponse
     {
         if (!$product = $this->productRepository->getByUUID($uuid)) {
@@ -85,6 +274,30 @@ class ProductController extends ApiController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/product/{uuid}",
+     *      operationId="delete_product",
+     *      tags={"Products"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete a product",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+
+     *
      * @throws Throwable
      */
     public function delete($uuid): JsonResponse

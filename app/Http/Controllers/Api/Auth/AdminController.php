@@ -17,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Throwable;
 
@@ -30,6 +31,75 @@ class AdminController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *      path="/admin/create",
+     *      operationId="create_admin",
+     *      tags={"Admin"},
+     *      summary="Create a admin account",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "avatar", "address", "phone_number"},
+     *                  @OA\Property(
+     *                      property="first_name",
+     *                      type="string",
+     *                      description="User firstname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="last_name",
+     *                      type="string",
+     *                      description="User lastname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password_confirmation",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="avatar",
+     *                      type="string",
+     *                      description="User avatar- Image UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      type="string",
+     *                      description="User main address"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phone_number",
+     *                      type="string",
+     *                      description="User phone number"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="is_marketing",
+     *                      type="string",
+     *                      description="User marketing preferences",
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
      * @throws Throwable
      */
     public function store(UserRequest $request): JsonResponse
@@ -48,6 +118,43 @@ class AdminController extends ApiController
         }
     }
 
+    /**
+     * @OA\Post(
+     *      path="/admin/login",
+     *      operationId="login_admin",
+     *      tags={"Admin"},
+     *      summary="Login a Admin Account",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="LoginRequest",
+     *                  title="Login Request",
+     *                  required={"email", "password" },
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="Admin email"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="Admin password"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
+     * @throws Throwable
+     */
     public function login(UserLoginRequest $request): JsonResponse
     {
         try {
@@ -75,6 +182,22 @@ class AdminController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/admin/logout",
+     *      operationId="logout_admin",
+     *      tags={"Admin"},
+     *      summary="Logout an Admin account",
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
+     * @throws Throwable
+     */
     public function logout(Request $request): JsonResponse
     {
         $auth = Auth::guard();
@@ -82,6 +205,114 @@ class AdminController extends ApiController
         return $this->sendSuccessResponse([]);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/admin/user-listing",
+     *      operationId="user-listing",
+     *      security={{"bearerAuth":{}}},
+     *      tags={"Admin"},
+     *      summary="List all the users",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+
+     *      @OA\Parameter(
+     *          name="first_name",
+     *          description="first_name",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="email",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="phone",
+     *          description="phone",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="address",
+     *          description="address",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="created_at",
+     *          description="created_at",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="marketing",
+     *          description="marketing",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"0", "1"}
+     *          )
+     *      ),
+     *
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function allUsers(Request $request): JsonResponse
     {
         $data = [
@@ -101,6 +332,84 @@ class AdminController extends ApiController
     }
 
     /**
+     * @OA\Put(
+     *      path="/admin/user-edit/{uuid}",
+     *      operationId="admin_edit_user",
+     *      tags={"Admin"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Edit a user account",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="EditRequest",
+     *                  title="Edit Request",
+     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "address", "phone_number", },
+     *                  @OA\Property(
+     *                      property="first_name",
+     *                      type="string",
+     *                      description="User firstname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="last_name",
+     *                      type="string",
+     *                      description="User lastname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password_confirmation",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="avatar",
+     *                      type="string",
+     *                      description="User avatar- Image UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      type="string",
+     *                      description="User main address"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phone_number",
+     *                      type="string",
+     *                      description="User phone number"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="is_marketing",
+     *                      type="string",
+     *                      description="User marketing preferences",
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      * @throws Throwable
      */
     public function editUser($uuid, UpdateUserRequest $request): JsonResponse
@@ -120,6 +429,30 @@ class AdminController extends ApiController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/admin/user-delete/{uuid}",
+     *      operationId="admin_delete_user",
+     *      tags={"Admin"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete a user account",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+
+     *
      * @throws Throwable
      */
     public function deleteUser($uuid): JsonResponse

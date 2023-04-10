@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
@@ -28,7 +29,60 @@ class OrderController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *      path="/order/create",
+     *      operationId="create_order",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Create order",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"order_status_uuid", "payment_uuid", "products", "address" },
+     *                  @OA\Property(
+     *                      property="order_status_uuid",
+     *                      type="string",
+     *                      description="Order status UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="payment_uuid",
+     *                      type="string",
+     *                      description="Payment UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="products",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          type="object",
+     *                          @OA\Property(property="uuid", type="string"),
+     *                          @OA\Property(property="quantity", type="integer"),
+     *                      ),
+     *                      description="Array of objects with product uuid and quantity"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      type="object",
+     *                      @OA\Property(property="billing", type="string"),
+     *                      @OA\Property(property="shipping", type="string"),
+     *                      description="Billing and Shipping address"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
      * @throws Throwable
+     *
      */
     public function store(OrderRequest $request): JsonResponse
     {
@@ -47,6 +101,67 @@ class OrderController extends ApiController
     }
 
     /**
+     *
+     * @OA\Put(
+     *      path="/order/{uuid}",
+     *      operationId="edit_order",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Edit order",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="EditRequest",
+     *                  title="Edit Request",
+     *                  required={"order_status_uuid", "payment_uuid", "products", "address" },
+     *                  @OA\Property(
+     *                      property="order_status_uuid",
+     *                      type="string",
+     *                      description="Order status UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="payment_uuid",
+     *                      type="string",
+     *                      description="Payment UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="products",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          type="object",
+     *                          @OA\Property(property="uuid", type="string"),
+     *                          @OA\Property(property="quantity", type="integer"),
+     *                      ),
+     *                      description="Array of objects with product uuid and quantity"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      type="object",
+     *                      @OA\Property(property="billing", type="string"),
+     *                      @OA\Property(property="shipping", type="string"),
+     *                      description="Billing and Shipping address"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      * @throws Throwable
      */
     public function edit($uuid, OrderRequest $request): JsonResponse
@@ -70,6 +185,30 @@ class OrderController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/order/{uuid}",
+     *      operationId="get_order",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Fetch order",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function fetch($uuid): JsonResponse
     {
         if (!$order = $this->orderRepository->getByUUID($uuid)) {
@@ -78,6 +217,57 @@ class OrderController extends ApiController
         return $this->sendSuccessResponse($order);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/orders",
+     *      operationId="orders",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="List all orders",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     *)
+     */
     public function all(Request $request): JsonResponse
     {
         $data = [
@@ -91,6 +281,30 @@ class OrderController extends ApiController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/order/{uuid}",
+     *      operationId="delete_order",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete order",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+
+     *
      * @throws Throwable
      */
     public function delete($uuid): JsonResponse
@@ -108,6 +322,78 @@ class OrderController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/orders/dashboard",
+     *      operationId="orders_dashboard",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="List orders dashboard",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="dateRange",
+     *          description="dateRange",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="object",
+     *              @OA\Property(property="from", type="string"),
+     *              @OA\Property(property="to", type="string"),
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="fixRange",
+     *          description="fixRange",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"today", "monthly", "yearly"}
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     *)
+     */
     public function dashboard(Request $request): JsonResponse
     {
         $data = [
@@ -122,6 +408,96 @@ class OrderController extends ApiController
         return $this->sendSuccessResponse($orders, errors: null, extra: null);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/orders/shipment-locator",
+     *      operationId="shipment",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="List all shipped orders",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="orderUuid",
+     *          description="orderUuid",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="customerUuid",
+     *          description="customerUuid",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="dateRange",
+     *          description="dateRange",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="object",
+     *              @OA\Property(property="from", type="string"),
+     *              @OA\Property(property="to", type="string"),
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="fixRange",
+     *          description="fixRange",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"today", "monthly", "yearly"}
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     *)
+     */
     public function shipment(Request $request): JsonResponse
     {
         $data = [
@@ -138,6 +514,30 @@ class OrderController extends ApiController
         return $this->sendSuccessResponse($orders, errors: null, extra: null);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/order/{uuid}/download",
+     *      operationId="download_order",
+     *      tags={"Orders"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Download order",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function download($uuid): StreamedResponse|JsonResponse
     {
         if (!$order = $this->orderRepository->getByUUID($uuid)) {

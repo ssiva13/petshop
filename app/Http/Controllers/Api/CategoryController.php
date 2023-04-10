@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -27,6 +28,36 @@ class CategoryController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *      path="/category/create",
+     *      operationId="create_category",
+     *      tags={"Categories"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Create a category",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"title"},
+     *                  @OA\Property(
+     *                      property="title",
+     *                      type="string",
+     *                      description="Category title"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
      * @throws Throwable
      */
     public function store(CategoryRequest $request): JsonResponse
@@ -42,6 +73,56 @@ class CategoryController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/categories",
+     *      operationId="categories",
+     *      tags={"Categories"},
+     *      summary="List all categories",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     *)
+     */
     public function all(Request $request): JsonResponse
     {
         $data = [
@@ -55,6 +136,35 @@ class CategoryController extends ApiController
     }
 
     /**
+     * @OA\Put(
+     *      path="/category/{uuid}",
+     *      operationId="edit_category",
+     *      tags={"Categories"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Edit a category",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="EditRequest",
+     *                  title="Edit Request",
+     *                  required={"title"},
+     *                  @OA\Property(
+     *                      property="title",
+     *                      type="string",
+     *                      description="Category title"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      * @throws Throwable
      */
     public function edit($uuid, UpdateCategoryRequest $request): JsonResponse
@@ -73,6 +183,29 @@ class CategoryController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/category/{uuid}",
+     *      operationId="get_category",
+     *      tags={"Categories"},
+     *      summary="Fetch a category",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function fetch($uuid): JsonResponse
     {
         if (!$category = $this->categoryRepository->getByUUID($uuid)) {
@@ -82,6 +215,30 @@ class CategoryController extends ApiController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/category/{uuid}",
+     *      operationId="delete_category",
+     *      tags={"Categories"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete a category",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+
+     *
      * @throws Throwable
      */
     public function delete($uuid): JsonResponse

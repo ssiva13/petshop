@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -27,7 +28,38 @@ class BrandController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *      path="/brand/create",
+     *      operationId="create_brand",
+     *      tags={"Brands"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Create a brand",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"title"},
+     *                  @OA\Property(
+     *                      property="title",
+     *                      type="string",
+     *                      description="Brand title"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
      * @throws Throwable
+     *
      */
     public function store(BrandRequest $request): JsonResponse
     {
@@ -42,6 +74,56 @@ class BrandController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/brands",
+     *      operationId="brands",
+     *      tags={"Brands"},
+     *      summary="List all brands",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     *)
+     */
     public function all(Request $request): JsonResponse
     {
         $data = [
@@ -55,6 +137,36 @@ class BrandController extends ApiController
     }
 
     /**
+     *
+     * @OA\Put(
+     *      path="/brand/{uuid}",
+     *      operationId="edit_brand",
+     *      tags={"Brands"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Edit a brand",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="EditRequest",
+     *                  title="Edit Request",
+     *                  required={"title"},
+     *                  @OA\Property(
+     *                      property="title",
+     *                      type="string",
+     *                      description="Brand title"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      * @throws Throwable
      */
     public function edit($uuid, UpdateBrandRequest $request): JsonResponse
@@ -73,6 +185,29 @@ class BrandController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/brand/{uuid}",
+     *      operationId="get_brand",
+     *      tags={"Brands"},
+     *      summary="Fetch a brand",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function fetch($uuid): JsonResponse
     {
         if (!$brand = $this->brandRepository->getByUUID($uuid)) {
@@ -82,6 +217,30 @@ class BrandController extends ApiController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/brand/{uuid}",
+     *      operationId="delete_brand",
+     *      tags={"Brands"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete a brand",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+
+     *
      * @throws Throwable
      */
     public function delete($uuid): JsonResponse

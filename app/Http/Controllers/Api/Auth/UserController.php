@@ -19,6 +19,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Throwable;
 
@@ -32,6 +33,75 @@ class UserController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *      path="/user/create",
+     *      operationId="create_user",
+     *      tags={"User"},
+     *      summary="Create a user",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "address", "phone_number"},
+     *                  @OA\Property(
+     *                      property="first_name",
+     *                      type="string",
+     *                      description="User firstname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="last_name",
+     *                      type="string",
+     *                      description="User lastname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password_confirmation",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="avatar",
+     *                      type="string",
+     *                      description="User avatar- Image UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      type="string",
+     *                      description="User main address"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phone_number",
+     *                      type="string",
+     *                      description="User phone number"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="is_marketing",
+     *                      type="string",
+     *                      description="User marketing preferences",
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
      * @throws Throwable
      */
     public function store(UserRequest $request): JsonResponse
@@ -50,6 +120,43 @@ class UserController extends ApiController
         }
     }
 
+    /**
+     * @OA\Post(
+     *      path="/user/login",
+     *      operationId="login_user",
+     *      tags={"User"},
+     *      summary="Login a user Account",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="LoginRequest",
+     *                  title="Login Request",
+     *                  required={"email", "password" },
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
+     * @throws Throwable
+     */
     public function login(UserLoginRequest $request): JsonResponse
     {
         try {
@@ -76,6 +183,21 @@ class UserController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/user",
+     *      operationId="user.profile",
+     *      tags={"User"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Fetch a user profile and view account",
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     */
     public function profile(Request $request): JsonResponse
     {
         $uuid = $this->getUserUuid($request->bearerToken());
@@ -92,6 +214,75 @@ class UserController extends ApiController
     }
 
     /**
+     * @OA\Put(
+     *      path="/user/edit",
+     *      operationId="edit_user",
+     *      security={{"bearerAuth":{}}},
+     *      tags={"User"},
+     *      summary="Edit a user",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="EditRequest",
+     *                  title="Edit Request",
+     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "address", "phone_number", },
+     *                  @OA\Property(
+     *                      property="first_name",
+     *                      type="string",
+     *                      description="User firstname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="last_name",
+     *                      type="string",
+     *                      description="User lastname"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password_confirmation",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="avatar",
+     *                      type="string",
+     *                      description="User avatar- Image UUID"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      type="string",
+     *                      description="User main address"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phone_number",
+     *                      type="string",
+     *                      description="User phone number"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="is_marketing",
+     *                      type="string",
+     *                      description="User marketing preferences",
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      * @throws Throwable
      */
     public function edit(UpdateUserRequest $request): JsonResponse
@@ -111,6 +302,22 @@ class UserController extends ApiController
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/user/logout",
+     *      operationId="logout_user",
+     *      tags={"User"},
+     *      summary="Logout a user",
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+     *
+     * @throws Throwable
+     */
     public function logout(Request $request): JsonResponse
     {
         $auth = Auth::guard();
@@ -119,7 +326,36 @@ class UserController extends ApiController
     }
 
     /**
-     * @throws Throwable
+     * @OA\Post(
+     *      path="/user/forgot-password",
+     *      operationId="forgot-password",
+     *      tags={"User"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Creates a token to reset a user password",
+     *
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"email"},
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      */
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
@@ -139,7 +375,50 @@ class UserController extends ApiController
     }
 
     /**
-     * @throws Throwable
+     * @OA\Post(
+     *      path="/user/reset-password-token",
+     *      operationId="reset-password-token",
+     *      tags={"User"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Reset a user password with the a token",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  schema="CreateRequest",
+     *                  title="Create Request",
+     *                  required={"email", "token", "password", "password_confirmation"},
+     *                  @OA\Property(
+     *                      property="token",
+     *                      type="string",
+     *                      description="User reset token"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password_confirmation",
+     *                      type="string",
+     *                      description="User password"
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
@@ -164,8 +443,55 @@ class UserController extends ApiController
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
+     * @OA\Get(
+     *      path="/user/orders",
+     *      operationId="user_orders",
+     *      tags={"User"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="List all orders for the user",
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          description="limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="sortBy",
+     *          description="sortBy",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="desc",
+     *          description="desc",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *      ),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
      */
     public function orders(Request $request): JsonResponse
     {
@@ -189,6 +515,21 @@ class UserController extends ApiController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/user",
+     *      operationId="delete_user",
+     *      tags={"User"},
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete a user account",
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=500, description="Internal server error"),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=422, description="Unprocessable Entity"),
+     *      @OA\Response(response=404, description="Not found"),
+     * )
+
+     *
      * @throws Throwable
      */
     public function delete(Request $request): JsonResponse
