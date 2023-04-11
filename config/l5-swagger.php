@@ -41,6 +41,8 @@ return [
                 */
                 'annotations' => [
                     base_path('app'),
+                    base_path('packages/currency-exchange/src'),
+//                    base_path('packages/laravel-notify/src'),
                 ],
 
             ],
