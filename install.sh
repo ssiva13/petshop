@@ -2,6 +2,8 @@
 PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
+cp .env.example .env
+
 #Build docker image
 docker-compose up --build -d \
     && echo -e "\n${PURPLE} Please wait while service is up ... \n ${NC}" \
