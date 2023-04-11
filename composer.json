@@ -12,7 +12,7 @@
             "type": "path",
             "url": "./libraries/*",
             "options": {
-                "symlink": false
+                "symlink": true
             }
         }
     },

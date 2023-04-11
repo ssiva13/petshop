@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d34063628fa5688888700dda61cd0dc",
+    "content-hash": "998c2fa3ea27dcae7cbf2a2d67ce9635",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -6040,7 +6040,7 @@
             "dist": {
                 "type": "path",
                 "url": "./libraries/currency-exchange",
-                "reference": "80a9c43654ded0a1a4f395d461293376e6757e2e"
+                "reference": "248b01e85bc333c1b4d7db3201ce9d418c1cd44e"
             },
             "require": {
                 "darkaonline/l5-swagger": "^8.5",
@@ -6091,7 +6091,7 @@
             ],
             "description": "Currency exchange Library",
             "transport-options": {
-                "symlink": false,
+                "symlink": true,
                 "relative": true
             }
         },
@@ -6101,7 +6101,7 @@
             "dist": {
                 "type": "path",
                 "url": "./libraries/laravel-notify",
-                "reference": "0402813575848310805458a9c678d9c2bca740c2"
+                "reference": "381faf007f6d652d1ca5de6595fddb88f44ab2b1"
             },
             "require": {
                 "darkaonline/l5-swagger": "^8.5",
@@ -6138,7 +6138,7 @@
             ],
             "description": "Laravel Notifications library",
             "transport-options": {
-                "symlink": false,
+                "symlink": true,
                 "relative": true
             }
         },
@@ -6148,7 +6148,7 @@
             "dist": {
                 "type": "path",
                 "url": "./libraries/laravel-stripe",
-                "reference": "9dec14809109af1ceb68c789c2ebe3909a2d8432"
+                "reference": "adf8b07f89764b03d10bfdfcea13e5527f8a18a9"
             },
             "require": {
                 "darkaonline/l5-swagger": "^8.5",
@@ -6195,7 +6195,7 @@
             ],
             "description": "this package will expose the needed endpoints to perform a backend payment.",
             "transport-options": {
-                "symlink": false,
+                "symlink": true,
                 "relative": true
             }
         },
