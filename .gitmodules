@@ -7,6 +7,4 @@
 [submodule "libraries/laravel-stripe"]
 	path = libraries/laravel-stripe
 	url = https://github.com/ssiva13/laravel-notistripefy.git
-[submodule "libraries/libraries/currency-exchange"]
-	path = libraries/libraries/currency-exchange
-	url = git@github.com:ssiva13/currency-exchange.git
+

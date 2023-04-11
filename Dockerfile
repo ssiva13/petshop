@@ -50,7 +50,9 @@ WORKDIR /var/www
 COPY . .
 
 # Install composer dependencies
-RUN composer install --no-interaction --prefer-dist
+RUN composer install 
+# RUN composer install --no-interaction --prefer-dist
+
 
 # Install npm dependencies
 RUN npm install
