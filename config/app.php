@@ -201,9 +201,9 @@ return [
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\JwtServiceProvider::class,
         \L5Swagger\L5SwaggerServiceProvider::class,
-        // \Ssiva\CurrencyExchange\CurrencyExchangeServiceProvider::class,
-        // \Ssiva\LaravelNotify\LaravelNotifyServiceProvider::class,
-        // \Ssiva\LaravelStripe\StripePayServiceProvider::class,
+        \Ssiva\CurrencyExchange\CurrencyExchangeServiceProvider::class,
+        \Ssiva\LaravelNotify\LaravelNotifyServiceProvider::class,
+        \Ssiva\LaravelStripe\StripePayServiceProvider::class,
     ],
 
     /*
