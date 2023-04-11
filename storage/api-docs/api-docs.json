@@ -1621,7 +1621,6 @@
                                 "title": "Create Request",
                                 "required": [
                                     "order_status_uuid",
-                                    "payment_uuid",
                                     "products",
                                     "address"
                                 ],
@@ -1704,7 +1703,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -1747,7 +1746,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -1764,7 +1763,6 @@
                                 "title": "Edit Request",
                                 "required": [
                                     "order_status_uuid",
-                                    "payment_uuid",
                                     "products",
                                     "address"
                                 ],
@@ -1845,7 +1843,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -2186,7 +2184,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -3238,6 +3236,72 @@
                     }
                 }
             }
+        },
+        "/currency-exchange": {
+            "get": {
+                "tags": [
+                    "Currency Converter"
+                ],
+                "summary": "Convert currency",
+                "operationId": "19f1cd4125a9c3fbdb23b61d211ab142",
+                "parameters": [
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "The amount to convert",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "currency",
+                        "in": "query",
+                        "description": "The currency to convert to",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Conversion result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "amount": {
+                                            "type": "number",
+                                            "example": "100.23"
+                                        },
+                                        "currency": {
+                                            "type": "string",
+                                            "example": "USD"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -3293,6 +3357,10 @@
         {
             "name": "Main Page",
             "description": "API endpoints for Main Page"
+        },
+        {
+            "name": "Currency Converter",
+            "description": "This endpoint returns the exchange rate for the given amount in the same standard format as the other API endpoints."
         }
     ]
 }
