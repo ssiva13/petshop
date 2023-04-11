@@ -6,17 +6,19 @@ cp .env.example .env
 
 
 
-rm -rf libraries/currency-exchange
-git clone https://github.com/ssiva13/currency-exchange.git libraries/currency-exchange
+# rm -rf libraries/currency-exchange
+# git clone https://github.com/ssiva13/currency-exchange.git libraries/currency-exchange
 
-rm -rf libraries/laravel-notify
-git clone https://github.com/ssiva13/laravel-notify.git libraries/laravel-notify
+# rm -rf libraries/laravel-notify
+# git clone https://github.com/ssiva13/laravel-notify.git libraries/laravel-notify
 
-rm -rf libraries/laravel-stripe
-git clone https://github.com/ssiva13/laravel-stripe.git libraries/laravel-stripe
+# rm -rf libraries/laravel-stripe
+# git clone https://github.com/ssiva13/laravel-stripe.git libraries/laravel-stripe
 
 
-
+# composer require ssiva/laravel-notify:dev-main
+# composer require ssiva/laravel-stripe:dev-main
+# composer require ssiva/currency-exchange:dev-main
 
 
 
