@@ -8,8 +8,11 @@
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./packages/currency-exchange/tests</directory>
+        <testsuite name="Currency Exchange">
+            <directory suffix="Test.php">./vendor/ssiva/currency-exchange/tests</directory>
+        </testsuite>
+        <testsuite name="Laravel Notify">
+            <directory suffix="Test.php">./vendor/ssiva/laravel-notify/Tests</directory>
         </testsuite>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>

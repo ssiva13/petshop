@@ -19,5 +19,3 @@ yarn-error.log
 /.vscode
 
 #more ignored files
-packages/
-my.gitmodules
