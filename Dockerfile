@@ -50,6 +50,10 @@ WORKDIR /var/www
 COPY . .
 
 # Install composer dependencies
+
+# RUN composer require ssiva/laravel-notify:dev-main
+# RUN composer require ssiva/laravel-stripe:dev-main
+# RUN composer require ssiva/currency-exchange:dev-main
 RUN composer install 
 # RUN composer install --no-interaction --prefer-dist
 

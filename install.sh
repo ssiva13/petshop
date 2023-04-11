@@ -26,5 +26,5 @@ cp .env.example .env
 #Build docker image
 docker-compose up --build -d \
     && echo -e "\n${PURPLE} Please wait while service is up ... \n ${NC}" \
-    && sleep 5 && docker exec petshop /var/www/docker/setup.sh \
+    && sleep 5 && docker exec petshop /var/www/setup.sh \
     && echo "All done"
