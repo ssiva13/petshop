@@ -13,7 +13,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'api/documentation',
+                'api' => '/',
             ],
             'paths' => [
                 /*
@@ -41,8 +41,8 @@ return [
                 */
                 'annotations' => [
                     base_path('app'),
-                    base_path('vendor/ssiva/currency-exchange/src'),
-//                    base_path('packages/laravel-notify/src'),
+                    base_path('libraries/currency-exchange/src'),
+                    base_path('libraries/laravel-notify/src'),
                 ],
 
             ],

@@ -1,0 +1,6 @@
+[submodule "libraries/laravel-notify"]
+	path = libraries/laravel-notify
+	url = https://github.com/ssiva13/laravel-notify.git
+[submodule "libraries/currency-exchange"]
+	path = libraries/currency-exchange
+	url = https://github.com/ssiva13/currency-exchange.git
