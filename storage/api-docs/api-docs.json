@@ -327,7 +327,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -431,7 +431,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -1126,7 +1126,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -1161,6 +1161,17 @@
                 ],
                 "summary": "Edit a brand",
                 "operationId": "edit_brand",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1217,7 +1228,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -1384,7 +1395,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -1419,6 +1430,17 @@
                 ],
                 "summary": "Edit a category",
                 "operationId": "edit_category",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1475,7 +1497,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -1575,7 +1597,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -2351,7 +2373,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -2386,6 +2408,17 @@
                 ],
                 "summary": "Edit a order status",
                 "operationId": "edit_order-status",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2442,7 +2475,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -2609,7 +2642,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -2644,6 +2677,17 @@
                 ],
                 "summary": "Edit a payment",
                 "operationId": "edit_payment",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2700,7 +2744,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -2807,7 +2851,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -3002,7 +3046,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
@@ -3037,6 +3081,17 @@
                 ],
                 "summary": "Edit a product",
                 "operationId": "edit_product",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3126,7 +3181,7 @@
                 "parameters": [
                     {
                         "name": "uuid",
-                        "in": "query",
+                        "in": "path",
                         "description": "uuid",
                         "required": true,
                         "schema": {
