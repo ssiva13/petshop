@@ -40,12 +40,16 @@ class OrderRepository implements OrderInterface
         return $user->delete();
     }
 
-    public function processOrder(array $data): array
+    public function processOrder($data): array
     {
-        $items = json_decode($data['products']);
+        $items = $data;
+        if(!is_array($data)){
+            $items = json_decode("[$items]", true);
+        }
         $orderDetails = ['amount' => 0];
         foreach ($items as $item) {
-            if ($product = Product::find($item->product)) {
+            $item = (object) $item;
+            if ($product = Product::find($item->uuid)) {
                 $item->price = $product->price;
                 $item->uuid = $product->uuid;
                 $item->product = $product->title;
@@ -61,6 +65,13 @@ class OrderRepository implements OrderInterface
     {
         $order = Order::find($uuid);
         if ($order->update($data)) {
+
+
+            // Trigger event here
+            // event(new OrderStatusUpdated($this->order_uuid, $this->status, $this->updated_at));
+
+
+
             return $data;
         }
         return false;

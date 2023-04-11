@@ -27,21 +27,11 @@ class OrderRequest extends FormRequest
     {
         return [
             'order_status_uuid' => 'required|exists:order_statuses,uuid',
-            'payment_uuid' => 'string|exists:payments,uuid',
+            'payment_uuid' => 'nullable|string|exists:payments,uuid',
             'delivery_fee' => 'numeric',
-            'products' => 'required|json',
-            'address' => 'required|json',
+            'products' => 'required',
+            'address' => 'required',
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $products = $this->get('products');
-        $address = $this->get('address');
-        $this->merge([
-            'products' => $products ? json_encode($products) : null,
-            'address' => $address ? json_encode($address) : null,
-        ]);
     }
 
 }

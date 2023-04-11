@@ -93,7 +93,7 @@ class Order extends Model
         'updated_at' => 'timestamp',
         'shipped_at' => 'timestamp',
         'deleted_at' => 'timestamp',
-        'products' => 'json',
+        'products' => 'array',
         'address' => 'array'
     ];
     /**

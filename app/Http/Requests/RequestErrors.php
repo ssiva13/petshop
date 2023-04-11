@@ -19,7 +19,7 @@ trait RequestErrors
                 'success' => false,
                 'message' => 'Error Validating Request',
                 'data' => $validator->errors()
-            ])
+            ], 400)
         );
     }
 }

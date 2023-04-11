@@ -49,7 +49,7 @@ class OrderController extends ApiController
      *              @OA\Schema(
      *                  schema="CreateRequest",
      *                  title="Create Request",
-     *                  required={"order_status_uuid", "payment_uuid", "products", "address" },
+     *                  required={"order_status_uuid", "products", "address" },
      *                  @OA\Property(
      *                      property="order_status_uuid",
      *                      type="string",
@@ -96,14 +96,14 @@ class OrderController extends ApiController
         DB::beginTransaction();
         try {
             $orderRequest = $this->orderRepository->getOrderRequest($request);
-            $orderDetails = $this->orderRepository->processOrder($request->only('products'));
+            $orderDetails = $this->orderRepository->processOrder($request->get('products'));
             $data = array_merge($orderDetails, $orderRequest);
             $order = $this->orderRepository->create($data);
             DB::commit();
             return $this->sendSuccessResponse($order, Response::HTTP_CREATED);
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->throwError($exception->getMessage(), $exception->getTrace(), $exception->getCode());
+            return $this->throwError($exception->getMessage(), $exception->getTrace());
         }
     }
 
@@ -119,7 +119,7 @@ class OrderController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -131,7 +131,7 @@ class OrderController extends ApiController
      *              @OA\Schema(
      *                  schema="EditRequest",
      *                  title="Edit Request",
-     *                  required={"order_status_uuid", "payment_uuid", "products", "address" },
+     *                  required={"order_status_uuid", "products", "address" },
      *                  @OA\Property(
      *                      property="order_status_uuid",
      *                      type="string",
@@ -179,7 +179,7 @@ class OrderController extends ApiController
         DB::beginTransaction();
         try {
             $orderRequest = $this->orderRepository->getOrderRequest($request);
-            $orderDetails = $this->orderRepository->processOrder($request->only('products'));
+            $orderDetails = $this->orderRepository->processOrder($request->get('products'));
             $data = array_merge($orderDetails, $orderRequest);
 
             $order = $this->orderRepository->update(uuid: $order->uuid, data: $data);
@@ -203,7 +203,7 @@ class OrderController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -298,7 +298,7 @@ class OrderController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -532,7 +532,7 @@ class OrderController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
