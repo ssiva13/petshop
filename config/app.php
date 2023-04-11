@@ -203,6 +203,7 @@ return [
         \L5Swagger\L5SwaggerServiceProvider::class,
         \Ssiva\CurrencyExchange\CurrencyExchangeServiceProvider::class,
         \Ssiva\LaravelNotify\LaravelNotifyServiceProvider::class,
+        \Ssiva\LaravelStripe\StripePayServiceProvider::class,
     ],
 
     /*

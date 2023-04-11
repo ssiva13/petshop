@@ -30,7 +30,8 @@
         "league/fractal": "^0.20.1",
         "nesbot/carbon": "^2.66",
         "ssiva/currency-exchange": "dev-main",
-        "ssiva/laravel-notify": "dev-main"
+        "ssiva/laravel-notify": "dev-main",
+        "ssiva/laravel-stripe": "dev-main"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",

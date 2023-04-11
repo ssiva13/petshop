@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string $type
+ * @property string $response_status
  * @property int $created_at
  * @property int $updated_at
  * @property int $deleted_at
@@ -50,6 +51,7 @@ class Payment extends Model
         'uuid',
         'type',
         'details',
+        'response_status',
         'created_at',
         'updated_at',
         'deleted_at'
@@ -73,7 +75,8 @@ class Payment extends Model
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
         'deleted_at' => 'timestamp',
-        'details' => 'array'
+        'response_status' => 'array',
+        'details' => 'array',
     ];
     /**
      * The attributes that should be mutated to dates.
@@ -99,7 +102,6 @@ class Payment extends Model
     {
         return $this->hasOne(PaymentType::class, 'slug', 'type');
     }
-
 
     // Functions ...
 }

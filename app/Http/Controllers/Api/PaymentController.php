@@ -45,11 +45,17 @@ class PaymentController extends ApiController
      *              @OA\Schema(
      *                  schema="CreateRequest",
      *                  title="Create Request",
-     *                  required={"details", "type"},
+     *                  required={"details", "type", "order_uuid"},
      *                  @OA\Property(
      *                      property="type",
      *                      type="string",
-     *                      description="Payment type"
+     *                      description="Payment type",
+     *                      enum={"credit_card", "bank_transfer", "cash_on_delivery"},
+     *                  ),
+     *                  @OA\Property(
+     *                      property="order_uuid",
+     *                      type="string",
+     *                      description="The UUID of order being paid"
      *                  ),
      *                  @OA\Property(
      *                      property="details",
@@ -170,7 +176,13 @@ class PaymentController extends ApiController
      *                  @OA\Property(
      *                      property="type",
      *                      type="string",
-     *                      description="Payment type"
+     *                      description="Payment type",
+     *                      enum={"credit_card", "bank_transfer", "cash_on_delivery"},
+     *                  ),
+     *                  @OA\Property(
+     *                      property="order_uuid",
+     *                      type="string",
+     *                      description="The UUID of order being paid"
      *                  ),
      *                  @OA\Property(
      *                      property="details",

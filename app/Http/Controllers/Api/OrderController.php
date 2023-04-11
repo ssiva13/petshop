@@ -310,7 +310,6 @@ class OrderController extends ApiController
      *      @OA\Response(response=422, description="Unprocessable Entity"),
      *      @OA\Response(response=404, description="Not found"),
      * )
-
      *
      * @throws Throwable
      */
@@ -558,4 +557,29 @@ class OrderController extends ApiController
         return Storage::download($orderInvoice, basename($orderInvoice));
     }
 
+
+    /**
+     * @throws Throwable
+     */
+    public function updateOrderPayment($order_uuid, Request $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            if (!$order = $this->orderRepository->getByUUID($order_uuid)) {
+                return $this->sendErrorResponse('Order Not found!', Response::HTTP_NOT_FOUND);
+            }
+            $response_status = [
+                "response_status" => $request->all()
+            ];
+            $order = $this->orderRepository->updateOrderPayment($order, $response_status);
+            if(!$order){
+                return $this->sendErrorResponse('Payment Response Not Updated!', Response::HTTP_BAD_GATEWAY);
+            }
+            DB::commit();
+            return $this->sendSuccessResponse($order);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->throwError($exception->getMessage(), $exception->getTrace());
+        }
+    }
 }
