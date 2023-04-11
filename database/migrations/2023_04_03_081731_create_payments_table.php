@@ -16,6 +16,7 @@ return new class extends Migration {
             // $table->enum('type', ['credit_card', 'cash_on_delivery', 'bank_transfer']);
             $table->string('type');
             $table->json('details');
+            $table->json('response_status');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
         $validator = Validator::make($adminUser, $userRequest->rules());
         if ($validator->passes()) {
             unset($adminUser['password_confirmation']);
-            $adminUser['password'] = Hash::make('admin');
+            $adminUser['password'] = Hash::make($adminUser['password']);
             User::create($adminUser);
         }
 
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
         $validator = Validator::make($marketingUser, $userRequest->rules());
         if ($validator->passes()) {
             unset($marketingUser['password_confirmation']);
-            $marketingUser['password'] = Hash::make('marketing');
+            $marketingUser['password'] = Hash::make($marketingUser['password']);
             User::create($marketingUser);
         }
 
