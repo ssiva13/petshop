@@ -148,6 +148,15 @@ class CategoryController extends ApiController
      *      tags={"Categories"},
      *      security={{"bearerAuth":{}}},
      *      summary="Edit a category",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -199,7 +208,7 @@ class CategoryController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -231,7 +240,7 @@ class CategoryController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )

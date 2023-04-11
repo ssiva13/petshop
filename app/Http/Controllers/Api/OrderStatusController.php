@@ -149,6 +149,15 @@ class OrderStatusController extends ApiController
      *      tags={"Order Statuses"},
      *      security={{"bearerAuth":{}}},
      *      summary="Edit a order status",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -200,7 +209,7 @@ class OrderStatusController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -232,7 +241,7 @@ class OrderStatusController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )

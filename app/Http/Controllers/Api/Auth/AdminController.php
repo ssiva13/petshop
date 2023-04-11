@@ -349,7 +349,7 @@ class AdminController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -446,7 +446,7 @@ class AdminController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )

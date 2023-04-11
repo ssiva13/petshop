@@ -150,6 +150,15 @@ class PaymentController extends ApiController
      *      operationId="edit_payment",
      *      tags={"Payments"},
      *      summary="Edit a payment",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -206,7 +215,7 @@ class PaymentController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -237,7 +246,7 @@ class PaymentController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )

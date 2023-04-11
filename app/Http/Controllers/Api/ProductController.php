@@ -180,6 +180,15 @@ class ProductController extends ApiController
      *      tags={"Products"},
      *      security={{"bearerAuth":{}}},
      *      summary="Edit a product",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -258,7 +267,7 @@ class ProductController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -290,7 +299,7 @@ class ProductController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )

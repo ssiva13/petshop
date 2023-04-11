@@ -150,6 +150,15 @@ class BrandController extends ApiController
      *      tags={"Brands"},
      *      security={{"bearerAuth":{}}},
      *      summary="Edit a brand",
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          description="uuid",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -201,7 +210,7 @@ class BrandController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -233,7 +242,7 @@ class BrandController extends ApiController
      *          name="uuid",
      *          description="uuid",
      *          required=true,
-     *          in="query",
+     *          in="path",
      *          @OA\Schema(
      *              type="string"
      *          )
