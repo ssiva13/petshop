@@ -6135,7 +6135,7 @@
             "dist": {
                 "type": "path",
                 "url": "./libraries/laravel-stripe",
-                "reference": "eed01b6b37b3101f2286863ed79750b3fb75c85f"
+                "reference": "d6828d3ae2955f3dc58ec768fc2904cb32e0c5f8"
             },
             "require": {
                 "darkaonline/l5-swagger": "^8.5",

@@ -207,12 +207,7 @@ class OrderRepository implements OrderInterface
     }
 
 
-    /**
-     * @param $order
-     * @param array $data
-     * @return mixed
-     */
-    public function updateOrderPayment($order, array $data): mixed
+    public function updateOrderPayment($order, array $data)
     {
         $payment = $order->payment;
         if ($payment->update($data)) {

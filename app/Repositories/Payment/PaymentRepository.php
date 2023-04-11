@@ -65,7 +65,10 @@ class PaymentRepository implements PaymentInterface
      */
     public function processPayment($order_uuid, $payment): mixed
     {
-        $order = Order::find($order_uuid)->orderPayment()->associate($payment);
+        $order = Order::find($order_uuid);
+        $order->payment_uuid = $payment->uuid;
+        $order->save();
+
         $processor = new StripePaymentProcessor();
         $checkoutData = $processor->createStripeCheckout($order->products, $order_uuid);
         $order->stripe = $checkoutData;
