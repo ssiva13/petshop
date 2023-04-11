@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Lcobucci\JWT\Token\Parser;
+use Ssiva\LaravelNotify\Events\OrderStatusUpdated;
 
 class OrderRepository implements OrderInterface
 {
@@ -65,13 +66,10 @@ class OrderRepository implements OrderInterface
     {
         $order = Order::find($uuid);
         if ($order->update($data)) {
-
-
-            // Trigger event here
-            // event(new OrderStatusUpdated($this->order_uuid, $this->status, $this->updated_at));
-
-
-
+            // Trigger order status change here
+            if($orderUpdate = array_key_exists('order_status_uuid', $order->getChanges())){
+                event(new OrderStatusUpdated($order->uuid, $order->orderStatus->title, $order->updated_at));
+            }
             return $data;
         }
         return false;

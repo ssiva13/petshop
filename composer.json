@@ -10,9 +10,9 @@
     "repositories": {
         "local": {
             "type": "path",
-            "url": "./packages/*",
+            "url": "./libraries/*",
             "options": {
-                "symlink": true
+                "symlink": false
             }
         }
     },
@@ -29,7 +29,8 @@
         "lcobucci/jwt": "^5.0",
         "league/fractal": "^0.20.1",
         "nesbot/carbon": "^2.66",
-        "ssiva/currency-exchange": "dev-main"
+        "ssiva/currency-exchange": "dev-main",
+        "ssiva/laravel-notify": "dev-main"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",

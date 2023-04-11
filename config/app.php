@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
-use L5Swagger\L5SwaggerServiceProvider;
-use Ssiva\CurrencyExchange\CurrencyExchangeServiceProvider;
 
 return [
 
@@ -202,8 +200,9 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\JwtServiceProvider::class,
-        L5SwaggerServiceProvider::class,
-        CurrencyExchangeServiceProvider::class,
+        \L5Swagger\L5SwaggerServiceProvider::class,
+        \Ssiva\CurrencyExchange\CurrencyExchangeServiceProvider::class,
+        \Ssiva\LaravelNotify\LaravelNotifyServiceProvider::class,
     ],
 
     /*
