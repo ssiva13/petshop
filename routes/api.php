@@ -150,6 +150,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('{uuid}', [OrderController::class, 'delete'])->name('order.delete');
             Route::get('{uuid}/download', [OrderController::class, 'download'])->name('order.download');
         });
+            Route::patch('payment/{order_uuid}', [OrderController::class, 'updateOrderPayment'])->name('payment.order');
     });
 
 

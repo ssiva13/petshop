@@ -2526,11 +2526,21 @@
                                 "title": "Create Request",
                                 "required": [
                                     "details",
-                                    "type"
+                                    "type",
+                                    "order_uuid"
                                 ],
                                 "properties": {
                                     "type": {
                                         "description": "Payment type",
+                                        "type": "string",
+                                        "enum": [
+                                            "credit_card",
+                                            "bank_transfer",
+                                            "cash_on_delivery"
+                                        ]
+                                    },
+                                    "order_uuid": {
+                                        "description": "The UUID of order being paid",
                                         "type": "string"
                                     },
                                     "details": {
@@ -2702,6 +2712,15 @@
                                 "properties": {
                                     "type": {
                                         "description": "Payment type",
+                                        "type": "string",
+                                        "enum": [
+                                            "credit_card",
+                                            "bank_transfer",
+                                            "cash_on_delivery"
+                                        ]
+                                    },
+                                    "order_uuid": {
+                                        "description": "The UUID of order being paid",
                                         "type": "string"
                                     },
                                     "details": {
