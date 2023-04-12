@@ -18,11 +18,13 @@ git clone https://github.com/ssiva13/petshop.git
 
 #### Install with Docker
 - run `chmod +x install.sh`
+- run `chmod +x setup.sh`
+- run `chmod +x uninstall.sh`
 - Run the bash file after cloning `./install.sh`
   - This command will
       - Pull the docker images needed
       - Install the services defined in `docker-compose.yml`
-      - Run the `docker/setup.sh` script which in turn runs
+      - Run the docker `setup.sh` script which in turn runs
         - `composer install`
         - `npm install`
         - `npm run build`
