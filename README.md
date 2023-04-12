@@ -17,6 +17,7 @@ git clone https://github.com/ssiva13/petshop.git
 - Change Directory `cd petshop`
 
 #### Install with Docker
+- run `chmod +x install.sh`
 - Run the bash file after cloning `./install.sh`
   - This command will
       - Pull the docker images needed
